@@ -1,0 +1,5 @@
+/venv
+/dataset/__pycache__
+dataset/generate_input_dataset.py
+dataset/movie_detail.py
+dataset/movie_list.py
