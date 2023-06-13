@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+        <div class="row justify-content-md-center">
+            <div class="col-md-7 col-lg-5">
+
+                {% if movies %}
+                    {% for movie in movies %}
+                        <div>
+                            <img src="{{ movie.user.image_profile }}" alt="image" width="50" height="50">
+                            {{ movie.user.username }}
+                            <li> {{ movie.review }} </li>
+                        </div>
+                    
+                    {% endfor %}
+                {% endif %}
+
+                {% if ex_reviews %}
+                    {% for review in ex_reviews %}    
+                        <div>
+                                {% set path = review['author_details']['avatar_path']  %}
+                                {% if path %}
+                                    <img src="{{ path }}" alt="image" width="50" height="50">
+                                {% endif %}
+
+                                {{ review['author'] }}
+                            
+                            <li> {{ review['content'] }}</li>
+                            
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            
+            </div>
+        </div>
+        
+        <a href="/movie_detail/{{ id }}"> Go to movie detail </a>
+        
+
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+<main>
+  
+      <!-- Global parnet for all divs -->
+      <div id="myCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="500">
+              
+              <!-- # wrap the sliders -->
+              <div class="carousel-inner">
+                 
+                  <!-- Fixed text -->
+                  <div class="fixed-text">
+                      <h1> Welcome to MoviesBox </h1>
+                      <p> MoviesBox is a free film app that lets you discover movies with ease </p>
+                      
+                      <a href="/signup" class="btn btn-lg btn-darkgreen"> Get Started </a>
+                  </div> 
+
+                  <!-- # tabs for sliders -->
+                  <ul class="carousel-indicators">
+                      
+                      <li data-bs-target="#myCarousel"
+                      data-bs-slide-to="0" class="active"> 
+                      </li>
+
+                      <li data-bs-target="#myCarousel"
+                      data-bs-slide-to="1">   
+                      </li>
+
+                      <li data-bs-target="#myCarousel"
+                      data-bs-slide-to="2">   
+                      </li>
+
+                  </ul>
+
+                      <div class="carousel-item active">
+                          <div class="overlay-image"
+                          style="background-image:url(https://image.tmdb.org/t/p/w500///ygO9lowFMXWymATCrhoQXd6gCEh.jpg);">
+                          </div>
+                          <div class="container-slide">
+                              <h1>Example Headline 1</h1>
+                              <p> Test 1   
+                              </p> 
+                          </div>
+                      </div>
+
+                      <div class="carousel-item">
+                              <div class="overlay-image"
+                              style="background-image:url(https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg);">
+                              </div>
+                              <div class="container-slide">
+                                  <h1>Batman</h1>
+                                  <p> Test 2
+                                  </p> 
+                              </div>
+                      </div>
+
+                      <div class="carousel-item">
+                          <div class="overlay-image"
+                          style="background-image:url(https://image.tmdb.org/t/p/w500/iLWzJxatuwwMT76dtMuwh3FEp2X.jpg);">
+                          </div>
+                              <div class="container-slide">
+                                  <h1>The Matrix</h1>
+                                  <p> Test 3
+                                  </p> 
+                              </div>
+                      </div>
+                      
+                      
+              </div>
+      </div>
+  
+
+      <div class="movie-form-container">
+        <div class="movie-form">
+          <h1 class="join-message">What to watch</h1>
+          <p> based on your favorite movie</p>
+
+          <form method="POST">
+            {% include "_form.html" %}    
+            <button class="btn btn-lg btn-darkgreen">Suggest</button>
+          </form>
+        </div>
+      </div>
+          
+</main>     
+        
+      
+  
+
+{% endblock %}

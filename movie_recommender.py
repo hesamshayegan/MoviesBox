@@ -36,7 +36,7 @@ cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 indices = pd.Series(df2.index, index=df2['title']).drop_duplicates()
 
 # Function that takes in movie title as input and outputs most similar movies
-def get_recommendations(title, cosine_sim=cosine_sim):
+def movie_suggestions(title, cosine_sim=cosine_sim):
     # Get the index of the movie that matches the title
     idx = indices[title]
 
@@ -51,11 +51,16 @@ def get_recommendations(title, cosine_sim=cosine_sim):
 
     # Get the movie indices
     movie_indices = [i[0] for i in sim_scores]
+    
+    # Create a dictionary of the top 10 most similar movies
+    titles = df2['title'].iloc[movie_indices].tolist()
+    ids = df2['id'].iloc[movie_indices].tolist()
+    movies = dict(zip(ids, titles))
 
-    # Return the top 10 most similar movies
-    return df2['title'].iloc[movie_indices]
+    # Return the suggested movies
+    return movies
 
-get_recommendations('The Dark Knight Rises')
+movie_suggestions('The Dark Knight Rises')
 
 ########################################################################
 ##### Recommender System based on Genres, keywords, crew, and cast #####
@@ -136,4 +141,4 @@ df2 = df2.reset_index()
 indices = pd.Series(df2.index, index=df2['title'])
 
 
-get_recommendations('JFK', cosine_sim2) # dir, cast, genres, keywords
+movie_suggestions('JFK', cosine_sim2) # dir, cast, genres, keywords

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+        {% if movie %}
+
+            {% for id, movie in movie.items() %}
+               
+               <p> {{ movie['title'] }} <p>
+               <a href="/favorite_movie_new/{{ id }}"> Add to your favorite movies </a> 
+               <br>
+               <a href="/reviews/{{ id }}"> Reviews </a>
+               <br>
+               <img src="{{ movie['img_url'] }}" alt="image" width="200" height="300">
+
+                {% if movie['video_url'] %}
+                    <iframe width="560" height="315" src="{{ movie['video_url'] }}?autoplay=1" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+                {% endif %}
+               
+                <p> Running time: {{ movie['runtime'] }} minutes </p>
+                <p> Overview: {{ movie['overview'] }} </p>
+                <p> Director(s)
+                    {% for director_id, director in movie['director'].items() %}
+                        <a href="/cast_detail/{{ director_id }}"> {{ director }} </a>
+                        
+                    {% endfor %}
+                </p>
+                <p> Release date:
+                    {{ movie['release_date'] }}   
+                </p>
+                          
+                Genres
+                </p>
+                {% for genre in movie['genres'] %}
+                    <a href="/genre_suggestions/{{ genre.id }}" id="{{ genre.id }}"> {{ genre.name }} </a>
+                {% endfor %}
+                <br>
+                <h2> Starring </h2>
+                {% set max_length = 5 if movie['casts']|length > 5 else movie['casts']|length %}
+                    {% for cast in movie['casts'][:max_length] %}
+                        <div>
+                            <a href="/cast_detail/{{ cast.id }}"> {{ cast.name }} </a>
+                            <p> {{ cast.character }} </p>
+                            {% if cast.profile_path %}
+                            <img src="{{ IMAGE_BASE_URL+cast.profile_path }}" alt="image" width="100" height="150">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+
+            {% endfor %}
+        
+        {% endif %}
+
+{% endblock %}

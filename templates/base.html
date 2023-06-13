@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>MoviesBox</title>
+
+  <link rel="stylesheet"
+        href="https://unpkg.com/bootstrap/dist/css/bootstrap.css">
+  <script src="https://unpkg.com/jquery"></script>
+  <script src="https://unpkg.com/popper"></script>
+  <script src="https://unpkg.com/bootstrap"></script>
+  <link rel="stylesheet" href="/static/stylesheets/style.css">
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+</head>
+
+  <body class="{% block body_class %}{% endblock %}">
+
+        <header>
+            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+              <div class="container-fluid">
+                <div class="navbar-header"> 
+                   
+                    <a href="/homepage">MoviesBox</a>
+                    <a href="/all_reviews"> Movie Reviews </a>
+                </div>
+
+                <ul class="nav navbar-nav navbar-right">
+                  
+                  {% if not g.user %}
+                  <li><a href="/signup">Sign up</a></li>
+                  <li><a href="/login">Log in</a></li>      
+                  {% else %}
+                  <li>
+                    <a href="/users/{{ g.user.id }}">
+                      {{ g.user.username }}
+                      <img src="{{ g.user.image_profile }}" alt="{{ g.user.username }}">
+                    </a>
+                  </li>
+                  <li><a href="/favorite_movies"> Favorite Movies </a></li>
+                  <li><a href="/favorite_casts"> Favorite Casts </a></li>
+                  <li><a href="/users/edit"> Edit profile </a></li>
+                  <li><a href="/logout">Log out</a></li> 
+                  {% endif %}
+                  
+                </ul>
+              </div>
+            </nav>
+      </header>      
+
+      <div class="container">
+        {% for category, message in get_flashed_messages(with_categories=True) %}
+        <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+
+
+        {% block content %}
+
+        {% endblock %}
+
+      </div>
+      
+
+
+  </body>
+</html>
+
+<!-- <link rel="stylesheet"
+        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
+  <link rel="stylesheet" href="/static/stylesheets/style.css">
+  <link rel="shortcut icon" href="/static/favicon.ico"> -->

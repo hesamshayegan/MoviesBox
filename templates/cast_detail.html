@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+        {% if cast %}
+            
+            {% set keep_trailing_newline = True %}
+                
+                {% for id, cast in cast.items() %}
+            
+                <h1> {{ cast['name'] }} </h1>
+                <img src="{{ cast['img_url'] }}" alt="image" width="200" height="300">
+
+                <a href="/favorite_cast_new/{{ id }}"> Add to your favorite casts</a>
+                <br>
+
+                <p> {{ cast['biography']|replace('\n\n', '<br>')|safe }} </p>
+
+                <b> Top movies of {{ cast['name'] }} </b> <br>
+                {% set max_length = 5 if cast['movies']|length > 5 else cast['movies']|length %}
+                {% for movie in cast['movies'][:max_length] %}
+                    <img src="{{ IMAGE_BASE_URL+movie.poster_path }}" alt="image" width="100" height="150">
+                    <a href="/movie_detail/{{ movie.id }}"> {{ movie.title }} </a>
+                    <br>
+                    Character: {{ movie.character }} <br>
+                    {{ movie.popularity }} <br> 
+
+                {% endfor %}
+
+            {% endfor %}
+        
+        {% endif %}
+
+{% endblock %}

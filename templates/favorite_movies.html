@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+        
+        {% for movie in movies_info %}
+            {% for id in movie.keys() %}
+            
+                <img src="{{ movie[id]['img_url'] }}" alt="image" width="200" height="300">
+                More about <a href="/movie_detail/{{ id }}"> {{ movie[id]['title'] }} </a> <br>
+                <a href="/favorite_movies/{{ id }}/delete"> Delete Cast </a> <br>
+                <a href="/review_movie/{{ id }}"> Write a Review </a> <br>
+                
+            {% endfor %}
+        {% endfor %}
+
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+        
+        
+        {% if g.user.id == id %}
+            {% for movie in movies%}
+
+                    <div>  
+                        
+                    <a href="/movie_detail/{{ movie.id }}"> {{ movie.title }} </a>    
+                    {{ movie.review }}
+                    <a href="/reviews/{{ movie.id }}/edit"> Edit review </a>
+
+                    </div>
+                
+            {% endfor %}
+        {% endif %}
+
+
+{% endblock %}

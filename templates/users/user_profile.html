@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+    {% if g.user.id == user.id %}
+        
+        <img src="{{ user.image_profile }}" width="200" height="200" alt="image-profile">
+        <h1> {{ user.username }} </h1>
+        <p>  email: {{ user.email }} </p>
+        
+            {% if user.username == 'demo' %}
+                The edit and delete options are not available for the demo account.
+            {% else %}
+                <a href="/users/edit" class="btn btn-outline-secondary"> Edit Profile </a>
+                
+                <a href="/users/{{ g.user.id }}/reviews"> My Reviews </a>
+
+                <form method="POST" action="/users/delete" class="form-inline">
+                    <button class="btn btn-outline-danger ml-2">Delete Account</button>
+                </form>
+            {% endif %}
+    
+    {% endif %}
+
+{% endblock %}

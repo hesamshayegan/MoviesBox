@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+        
+
+            {% for movie in random_reviews%}
+
+                    <div>  
+                        
+                    <img src="{{ movie.user.image_profile }}" alt="image" width="50" height="50">
+                    {{ movie.user.username }}
+                    <a href="/movie_detail/{{ movie.id}}"> {{ movie.title }} </a>    
+                    {{ movie.review }}
+
+                    </div>
+                
+            {% endfor %}
+
+
+{% endblock %}

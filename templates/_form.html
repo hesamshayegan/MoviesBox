@@ -1,0 +1,25 @@
+
+<!-- render a hidden input field with the CSRF token. -->
+{{ form.hidden_tag() }}
+<div class="form-group"></div>
+
+<!-- iterate over the form fields and renders each field that is not a hidden field. -->
+        {% for field in form if field.widget.input_type != 'hidden' %}
+          
+        {% for error in field.errors %}
+            <span class="text-danger">{{ error }}</span>
+          {% endfor %}
+
+        {% if field.widget.input_type == 'radio' %}
+          <div class="form-check">
+              {{ field(class_="form-check-input") }}
+              {{ field.label(class_="form-check-label") }}
+          </div>
+        {% else %}
+
+        {{ field(placeholder=field.label.text, class="form-control") }}
+
+        {% endif %}
+      
+
+        {% endfor %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+        
+        {% for cast in casts_info %}
+            {% for id in cast.keys() %}
+                
+                <img src="{{ cast[id]['img_url'] }}" alt="image" width="200" height="300">
+                More about <a href="/cast_detail/{{ id }}">{{ cast[id]['name'] }} </a> <br>
+                <a href="/favorite_casts/{{ id }}/delete"> Delete cast </a>
+
+            {% endfor %}
+        {% endfor %}
+
+{% endblock %}

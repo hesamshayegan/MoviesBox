@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block body_class %}onboarding{% endblock %}
+
+{% block content %}
+
+            {% if genre %}
+                <h2> Here are some really must-watch {{ genre }} movies that I think you'll love!</h2>
+            {% else %}
+                <h2> I've got some stunning movies. Hope you enjoy watching... </h2>
+            {% endif %}
+            
+            {% if suggested_titles %}
+                <div class="row">
+                    {% for id in suggested_titles.keys() %}
+                        {% if loop.index0 % 5 == 0 %}
+                            </div><div class="row">
+                        {% endif %}
+                        <div class="col-md-2">
+                            <div class="card">
+                                <img src="{{ suggested_titles[id][1] }}" class="card-img-top" alt="image" width="200" height="300">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ suggested_titles[id][0] }}</h5>
+                                    <p class="card-text">User score: {{ suggested_titles[id][2] }}%</p>
+                                    <a href="/movie_detail/{{ id }}" class="btn btn-primary">View Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+{% endblock %}
+
+

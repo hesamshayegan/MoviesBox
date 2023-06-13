@@ -1,0 +1,186 @@
+
+    /* ======================= Nav */
+    .navbar {
+    z-index: 3;
+    }
+
+    .navbar a {
+        color: #beb0b0;
+        font-size: 16px;
+        font-weight: bold;
+        text-decoration: none;
+    }
+    
+    .navbar a:hover {
+        color: #08560e;
+    }
+    
+    .navbar-brand {
+    display: flex;
+    align-items: center;
+    }
+    
+    .navbar-brand > img {
+    display: inline-block;
+    margin-bottom: 2px;
+    margin-right: 5px;
+    width: 20px;
+    border-radius: 2px;
+    }
+    
+    .nav > li > a > img {
+    width: 32px;
+    border-radius: 32px;
+    }
+    
+    ul.nav.navbar-nav {
+    align-items: center;
+    }
+    
+    ul.nav.navbar-nav li {
+    margin: 0 0.5rem;
+    display: flex;
+    }
+
+    /* ======================= Homepage */
+    #myCarousel {
+        width: 50%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+    }
+
+    .carousel-item {
+        height: 100vh;
+        background: #777;
+        color:white;
+    }
+    
+    .container-slide {
+        position: absolute;
+        bottom: 0;
+        left: 50px;
+        right:0 ;
+        padding-bottom: 50px;
+    }
+
+    .overlay-image {
+        position: absolute;
+        bottom: 0;
+        left:0 ;
+        right:0 ;
+        top: 0;
+        background-position: center;
+        background-size: cover;
+        opacity: 0.5;
+    }
+
+    .carousel-inner {
+        position: relative;
+    }
+
+    .fixed-text {
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 2;
+        color: white;
+        white-space: nowrap;
+    }
+
+    .btn-darkgreen {
+        background-color: darkgreen;
+        color: white;
+        border: none;
+    }
+
+    .btn-darkgreen:hover {
+        background-color: #608863
+    }
+
+    .carousel-indicators li {
+        list-style-type: none;
+    }
+
+    /* movie form */
+    .movie-form-container {
+        width: 50%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        z-index: 2;
+        background: linear-gradient(to bottom, #05410a, #889088);
+    }
+
+    .movie-form-container h1 {
+        color: rgb(57, 162, 101);
+        margin-top: 20px;
+        
+    }
+
+    .movie-form-container p {
+        color: rgb(149, 156, 152);
+        font-size: 25px;
+        display: block;
+        margin: 0 auto;
+    }
+
+    .movie-form-container .movie-form button {
+        display: block;
+        margin: 0 auto;
+    }
+
+    .movie-form-container .movie-form button:hover {
+        color: white;
+        background-color: #608863;
+    }
+
+    .movie-form-container .form-group {
+        margin-bottom: 10px;
+    }
+    
+    .movie-form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 100%;
+        margin-bottom: 20px;
+    
+    }
+
+    .movie-form form .form-group.review-field {
+        padding-bottom: 15px;
+    }
+
+    .form-control {
+        margin-bottom: 20px;
+
+    }
+
+    .form-control li
+    {
+        list-style-type: none;
+    }
+
+
+    /* ======================= all containers after Nav */
+    .container {
+        margin-top: 80px; /* Adjust this value as needed to create enough space below the navbar */
+    }
+    
+    .container h2 {
+        margin-top: 20px;
+        margin-bottom: 20px
+    }
+
+    
