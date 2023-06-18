@@ -1,7 +1,49 @@
+    
+    /* ======================= General */
+    
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+    body {
+        background: linear-gradient(to bottom, #abe3b2, #b6c4b6);
+        background-attachment: fixed; 
+      }
+
+    .container {
+        margin-top: 80px;
+    }
+
+    .form-control {
+        margin-bottom: 20px;
+        background-color: #d5e6db;
+        border: 0px;
+        border-radius: 15px;
+    }
+
+    .form-control li
+    {
+        list-style-type: none;
+    }
+
+    .btn-darkgreen {
+        background-color: darkgreen;
+        color: white;
+        border: none;
+    }
+
+    .btn-darkgreen:hover {
+        background-color: #608863
+    }
+    
+
 
     /* ======================= Nav */
+
     .navbar {
-    z-index: 3;
+        z-index: 3;
     }
 
     .navbar a {
@@ -16,69 +58,57 @@
     }
     
     .navbar-brand {
-    display: flex;
-    align-items: center;
+        display: flex;
+        align-items: center;
     }
     
     .navbar-brand > img {
-    display: inline-block;
-    margin-bottom: 2px;
-    margin-right: 5px;
-    width: 20px;
-    border-radius: 2px;
+        display: inline-block;
+        margin-bottom: 2px;
+        margin-right: 5px;
+        width: 20px;
+        border-radius: 2px;
     }
     
     .nav > li > a > img {
-    width: 32px;
-    border-radius: 32px;
+        width: 32px;
+        border-radius: 32px;
     }
     
     ul.nav.navbar-nav {
-    align-items: center;
+        align-items: center;
     }
     
     ul.nav.navbar-nav li {
-    margin: 0 0.5rem;
-    display: flex;
+        margin: 0 0.5rem;
+        display: flex;
     }
+
+    
 
     /* ======================= Homepage */
-    #myCarousel {
-        width: 50%;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1;
-    }
 
-    .carousel-item {
-        height: 100vh;
-        background: #777;
-        color:white;
+    .homepage {
+        --bs-gutter-x: 0;
     }
     
-    .container-slide {
-        position: absolute;
-        bottom: 0;
-        left: 50px;
-        right:0 ;
-        padding-bottom: 50px;
-    }
-
-    .overlay-image {
-        position: absolute;
-        bottom: 0;
-        left:0 ;
-        right:0 ;
-        top: 0;
-        background-position: center;
-        background-size: cover;
-        opacity: 0.5;
-    }
-
-    .carousel-inner {
+    .carousel-item {
         position: relative;
+        height: 100vh; 
+        background: no-repeat center center scroll;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: 100% 100%;        
+    }
+    
+    .carousel-item .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.3)
     }
 
     .fixed-text {
@@ -92,29 +122,19 @@
         white-space: nowrap;
     }
 
-    .btn-darkgreen {
-        background-color: darkgreen;
-        color: white;
-        border: none;
+    .fixed-text p {
+        font-size: 16px;
+    }
+      
+    @media (max-width: 844px) {
+        .fixed-text p {
+            font-size: 12px;
+        }
     }
 
-    .btn-darkgreen:hover {
-        background-color: #608863
-    }
-
-    .carousel-indicators li {
-        list-style-type: none;
-    }
-
-    /* movie form */
-    .movie-form-container {
-        width: 50%;
-        height: 100vh;
-        position: fixed;
-        top: 0;
-        right: 0;
-        z-index: 2;
-        background: linear-gradient(to bottom, #05410a, #889088);
+    
+    .rightside {
+        background: linear-gradient(to bottom, #05410a, #889088)
     }
 
     .movie-form-container h1 {
@@ -126,61 +146,306 @@
     .movie-form-container p {
         color: rgb(149, 156, 152);
         font-size: 25px;
-        display: block;
         margin: 0 auto;
     }
 
-    .movie-form-container .movie-form button {
-        display: block;
-        margin: 0 auto;
+    .movie-form-container input[type="radio"] + label {
+        color: rgb(80, 80, 80);
     }
 
-    .movie-form-container .movie-form button:hover {
-        color: white;
-        background-color: #608863;
+    @media (max-width: 844px) {
+        .movie-form-container {
+            margin: 10px;
+        }
     }
 
-    .movie-form-container .form-group {
-        margin-bottom: 10px;
-    }
+
     
-    .movie-form {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 100%;
-        margin-bottom: 20px;
-    
-    }
+    /* ======================= general titles */
 
-    .movie-form form .form-group.review-field {
-        padding-bottom: 15px;
-    }
-
-    .form-control {
-        margin-bottom: 20px;
-
-    }
-
-    .form-control li
+    .show-suggestions.title h1, .login-form h1, .signup-form h1,
+    .edit-profile-form h1, .create-review h1, .edit-review h1
     {
-        list-style-type: none;
+        margin: 10px;  
+        margin: 10px auto;        
+        text-align: center;     
+        background: linear-gradient(to right, darkgreen, blue);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        padding: 10px;
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 30px;
     }
 
+    /* ======================= Show suggestion*/
 
-    /* ======================= all containers after Nav */
-    .container {
-        margin-top: 80px; /* Adjust this value as needed to create enough space below the navbar */
+    .custom-card {
+        margin-bottom: 50px;        
     }
     
-    .container h2 {
-        margin-top: 20px;
-        margin-bottom: 20px
+    .show_suggestions {
+        font-family: 'Josefin Sans', sans-serif;
     }
 
+    .fa {
+        font-size: 20px;
+        display: inline-block;
+        white-space: nowrap;
+    }
     
+    .checked {
+        color: orange;
+    }
+
+    .list-group-item custom-list-group-item {
+        height: 30px; 
+    }
+
+    .card-header {
+        padding: 8px; 
+        height: 70px; 
+    }
+
+    .list-group-item {
+        padding: 5px
+    }
+
+    .card {
+        max-height: 510px;
+    }
+
+    .card-body {
+        padding: 8px;
+    }
+    
+
+
+    /* ======================= details */
+
+    body.movie-bg {
+        background-color: #00dea8;
+        background-image: linear-gradient(90deg, #76f6d6 0%, #161a1b 95%);
+        background-attachment: fixed;
+    }
+
+    .movie-detail-content h1, .cast-detail h1 {
+        color: rgb(0, 0, 0);
+        font-family: 'Alfa Slab One', cursive;;
+    }
+    .movie-detail-content, .cast-detail { 
+        font-family: 'Josefin Sans', sans-serif;
+        color: white    
+    }
+
+    .movie-detail-content h2, .cast-detail h2 {
+        font-size: 2rem;
+        margin-bottom: 5px;
+    }
+    .genre-badge {
+        padding: 2px;
+        margin: 2px;
+    }
+
+
+    /* Default styles for all screen sizes */
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    
+    .column-1, .column-2, .column-3 {
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    
+    .iframe-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* 16:9 aspect ratio for the iframe */
+    }
+    
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .column-2 {
+        display: flex; 
+        flex-direction: column; 
+        justify-content:  space-between; 
+        margin: 10px;
+        margin-left: 30px;
+    }
+    
+     /* Styles for small screens */
+    @media (max-width: 767px) {
+        .column-1, .column-2, .column-3 {
+        flex-basis: 100%;
+    }
+    
+    .column-2 {
+        order: 2;
+    }
+    
+    .column-3 {
+         order: 3;
+    }
+    
+    .iframe-container {
+        padding-bottom: 42.19%;
+        }
+    }
+  
+  /* Styles for medium screens */
+    @media (min-width: 768px) and (max-width: 1199px) {
+        .column-1, .column-3 {
+            flex-grow: 1; /* Allow column-1 and column-3 to grow */
+            flex-basis: 50%; 
+    }
+    
+    .column-2 {
+        flex-basis: 100%;
+        order: 2; 
+        }
+    }
+  
+  /* Styles for large screens */
+    @media (min-width: 1200px) {
+        .column-1 {
+        width: 300px; 
+        }
+        
+        .column-2 {
+        width: 300px; 
+        }
+        
+        .column-3 {
+        flex: 1; /* Allow column-3 to grow and fill the remaining space */
+        width: auto;
+        }
+    }
+  
+ /* ############################# */
+       
+    .movie-detail-content a, .cast-detail a {
+        color: rgb(0, 0, 0);
+        font-weight: bold;
+        text-decoration: none; 
+      }
+      
+    .movie-detail-content a:hover, .cast-detail a:hover {
+        text-decoration: underline; 
+      }
+
+    .movie-detail-content .add-favorites a:hover,
+    .cast-detail .add-favorites a:hover {
+        text-decoration: none; 
+      }
+    
+    .movie-detail-content  .movie-info {
+        margin-top: 10px;
+    }
+    .movie-detail-content  .movie-info div {
+        margin: 5px; 
+        padding: 5px; 
+    }
+
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top:0;
+        left:120px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: #90b75e;
+        border: 5px solid rgb(4, 113, 4);
+    }
+
+    .cast-movie {
+        position: relative
+    }
+
+    /* ======================= Reviews */
+
+    .all-reviews, .movie-reviews, .user-review {
+        margin-left: 100px;
+        margin-right: 100px;
+        color: white;
+    }
+
+    .all-reviews h1, .movie-reviews h1, .user-review h1 {
+        color: rgb(255, 255, 255);
+        font-family: 'Alfa Slab One', cursive;
+        font-size: 1.5rem;
+    }
+
+    .all-reviews a {
+        color: rgb(0, 0, 0);
+        font-weight: bold;
+        text-decoration: none; 
+    }
+
+    .all-reviews a:hover, .movie-reviews a:hover, .user-review a:hover{
+        text-decoration: underline; 
+    }
+
+    .movie-reviews a, .user-review a {
+        color: rgb(255, 255, 255);
+        font-weight: bold;
+        text-decoration: none; 
+    }
+    .user-review .movie a {
+        color: rgb(0, 0, 0);
+    }
+
+    .user-review .delete-review a {
+        text-decoration: none;    
+    }
+    
+
+    
+    /* ======================= favorites */
+        
+    .favorite-movies, .favorite-casts {
+        font-family: 'Josefin Sans', sans-serif;
+
+    }
+
+    .favorite-casts h1, .favorite-movies h1  {
+        color: rgb(255, 255, 255);
+        font-family: 'Alfa Slab One', cursive;
+        font-size: 1.5rem;
+        margin-bottom: 25px;
+    }
+
+    .favorite-movies a, .favorite-casts a{
+        color: rgb(0, 0, 0);
+        font-weight: bold;
+        text-decoration: none; 
+    }
+
+    .favorite-movies a:hover, .favorite-casts a:hover {
+        text-decoration: none; 
+    }
+
+
+
+    /* ======================= User profile */
+    
+    .user-profile a {
+        color: rgb(4, 113, 4);
+        font-weight: bold;
+        text-decoration: none;
+        margin: 5px;
+    }
+
+    .user-profile a:hover {
+        color:rgb(103, 201, 103);
+        text-decoration: underline
+    }

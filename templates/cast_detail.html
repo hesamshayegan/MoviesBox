@@ -1,36 +1,55 @@
 {% extends 'base.html' %}
 
-{% block body_class %}onboarding{% endblock %}
+{% block body_class %}movie-bg{% endblock %}
 
 {% block content %}
 
-        {% if cast %}
-            
-            {% set keep_trailing_newline = True %}
-                
-                {% for id, cast in cast.items() %}
-            
+<div class="cast-detail">
+    {% if cast %}
+        {% set keep_trailing_newline = True %}
+        {% for id, cast in cast.items() %}
+            <div class="row p-2">
+                <div class="col-12">
                 <h1> {{ cast['name'] }} </h1>
-                <img src="{{ cast['img_url'] }}" alt="image" width="200" height="300">
-
-                <a href="/favorite_cast_new/{{ id }}"> Add to your favorite casts</a>
-                <br>
-
-                <p> {{ cast['biography']|replace('\n\n', '<br>')|safe }} </p>
-
-                <b> Top movies of {{ cast['name'] }} </b> <br>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-12 col-md-4 d-flex flex-column align-items-center">
+                <img src="{{ cast['img_url'] }}" alt="image" width="250" height="330" class="border border-dark rounded">
+                <div class="add-favorites p-2 mt-2">
+                    <div> 
+                        <a href="/favorite_cast_new/{{ id }}">
+                        <i class="fa-solid fa-circle-plus" style="color: #206027;"></i>
+                        </a>                    
+                        <span>Add to favorites</span>
+                    </div>
+                </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <p class="text-justify"> {{ cast['biography']|replace('\n\n', '<br>')|safe }} </p>
+                </div>
+                <hr>
+            </div>
+            <div class="row p-1 justify-content-center">
+                <h2> Popular movies of {{ cast['name'] }} </h2>                
                 {% set max_length = 5 if cast['movies']|length > 5 else cast['movies']|length %}
                 {% for movie in cast['movies'][:max_length] %}
-                    <img src="{{ IMAGE_BASE_URL+movie.poster_path }}" alt="image" width="100" height="150">
-                    <a href="/movie_detail/{{ movie.id }}"> {{ movie.title }} </a>
-                    <br>
-                    Character: {{ movie.character }} <br>
-                    {{ movie.popularity }} <br> 
-
-                {% endfor %}
-
-            {% endfor %}
+                    <div class="cast-movie col-sm-12 col-md-6 col-lg-2 p-2">
+                        {% if movie.poster_path %}                    
+                            <img src="{{ IMAGE_BASE_URL+movie.poster_path }}" alt="image" width="150" height="200" class="border border-dark rounded">
+                            <div><a href="/movie_detail/{{ movie.id }}"> {{ movie.title }} </a></div>
+                            <div>{{ movie.character }}</div>                            
+                            <div class="circle">
+                                <div>{{ movie.popularity }}%</div>
+                            </div>                                                            
+                        {% endif %}
+                    </div>                    
+                {% endfor %}   
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
         
-        {% endif %}
 
 {% endblock %}
+

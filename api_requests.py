@@ -1,4 +1,4 @@
-import requests, datetime
+import requests, datetime, random
 
 API_BASE_URL = 'https://api.themoviedb.org/3/'
 API_KEY = '367dc9d5b1711d163786e1535161f93b'
@@ -52,6 +52,21 @@ def get_movie_by_genre(id):
 
 
     return [response, genres]
+
+
+# Get trending movies list from the API
+def get_trending_movies():
+    url = (API_BASE_URL+"trending/movie/week?api_key={api_key}&language=en-US&page1").format(api_key=API_KEY)
+   
+    try:     
+        res = requests.get(url)
+    except:
+        raise ('not connected to internet or movidb issue')
+    
+    response = res.json()
+
+    return response
+
 
 
 
@@ -125,7 +140,12 @@ def get_cast_detail(id):
     img_url = IMAGE_BASE_URL + resp['images']['profiles'][0]['file_path']
     biography = resp['biography']
     movies = resp['movie_credits']['cast']
-    movies.sort(key=lambda x: x['popularity'], reverse=True)  
+    movies.sort(key=lambda x: x['popularity'], reverse=True)
+    
+    max_pop = movies[0]['popularity']
+    for movie in movies:
+        movie['popularity'] = int(round((movie['popularity'] / max_pop) * 100))
+    
 
     cast = {
         id: {
@@ -169,3 +189,36 @@ def get_reviews(id):
                 review['author_details']['avatar_path'] = IMAGE_BASE_URL+avatar_path
                 
     return reviews
+
+
+
+# Retrieve trending movies data
+def get_trending_movies_info():
+
+    resp = get_trending_movies()
+
+    resp = random.sample(resp['results'], 10)
+    trending = {}
+    for index, movie in enumerate(resp):
+        if index >= 10:
+            break
+        if movie['poster_path']:
+            movie_id = movie['id']
+            title = movie['title']            
+            img_url = IMAGE_BASE_URL + movie['poster_path']
+
+            trending[movie_id] = {
+                'title': title,
+                'img_url': img_url}
+
+        # backup movie
+        else:
+            movie_id = 840326
+            title = "Sisu"
+            img_url = IMAGE_BASE_URL + "ygO9lowFMXWymATCrhoQXd6gCEh.jpg"
+
+            trending[movie_id] = {
+                'title': title,
+                'img_url': img_url}            
+    
+    return trending

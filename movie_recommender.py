@@ -47,7 +47,7 @@ def movie_suggestions(title, cosine_sim=cosine_sim):
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
 
     # Get the scores of the 10 most similar movies
-    sim_scores = sim_scores[1:11]
+    sim_scores = sim_scores[1:13]
 
     # Get the movie indices
     movie_indices = [i[0] for i in sim_scores]
@@ -56,7 +56,7 @@ def movie_suggestions(title, cosine_sim=cosine_sim):
     titles = df2['title'].iloc[movie_indices].tolist()
     ids = df2['id'].iloc[movie_indices].tolist()
     movies = dict(zip(ids, titles))
-
+    
     # Return the suggested movies
     return movies
 

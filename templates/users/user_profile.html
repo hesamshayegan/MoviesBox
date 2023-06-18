@@ -5,23 +5,32 @@
 {% block content %}
 
     {% if g.user.id == user.id %}
-        
-        <img src="{{ user.image_profile }}" width="200" height="200" alt="image-profile">
-        <h1> {{ user.username }} </h1>
-        <p>  email: {{ user.email }} </p>
-        
+           
+            <img src="{{ user.image_profile }}" width="200" height="200" alt="image-profile">
+            <h1>{{ user.username }}</h1>
+            <p>email: {{ user.email }}</p>
+            
             {% if user.username == 'demo' %}
-                The edit and delete options are not available for the demo account.
+                <p>The edit and delete options are not available for the demo account.</p>
             {% else %}
-                <a href="/users/edit" class="btn btn-outline-secondary"> Edit Profile </a>
-                
-                <a href="/users/{{ g.user.id }}/reviews"> My Reviews </a>
+                <div class="user-profile d-flex flex-column">
+                    <a href="/users/edit">Edit Profile</a>
+                    <a href="/favorite_movies"> Favorite Movies </a>
+                    <a href="/favorite_casts"> Favorite Casts </a>
+                    <a href="/users/{{ g.user.id }}/reviews">My Reviews</a>
 
-                <form method="POST" action="/users/delete" class="form-inline">
-                    <button class="btn btn-outline-danger ml-2">Delete Account</button>
-                </form>
+                    <form method="POST" action="/users/delete" class="form-inline">
+                        <button class="btn btn-danger btn-sm p-1">Delete Account</button>
+                    </form>
+                </div>
+                
             {% endif %}
-    
+
     {% endif %}
 
 {% endblock %}
+
+                    <!-- <a href="/users/edit" class="btn btn-outline-secondary custom-btn text-center">Edit Profile</a>
+                    <a class="btn btn-outline-info custom-btn text-center" href="/favorite_movies"> Favorite Movies </a>
+                    <a class="btn btn-outline-info custom-btn text-center" href="/favorite_casts"> Favorite Casts </a>
+                    <a class="btn btn-outline-info custom-btn text-center" href="/users/{{ g.user.id }}/reviews">My Reviews</a> -->

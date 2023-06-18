@@ -1,43 +1,48 @@
 {% extends 'base.html' %}
 
-{% block body_class %}onboarding{% endblock %}
+{% block body_class %}movie-bg{% endblock %}
 
 {% block content %}
 
-        <div class="row justify-content-md-center">
-            <div class="col-md-7 col-lg-5">
+        <div class="movie-reviews">
+            <div class="row">
+                <div class="col-6">
+                    <h1>MOVIE REVIEWS</h1>
+                </div>
+                <div class="col-6 d-flex flex-row-reverse">
+                    <div>
+                        <a href="/movie_detail/{{ id }}"> Go Back </a>
+                    </div>
+                </div>
+            </div>
+            
+                    {% if movies %}
+                        {% for movie in movies %}
+                            <div class="p-1">
+                                <img src="{{ movie.user.image_profile }}" alt="image" width="50" height="50" class="border border-dark rounded-circle">
+                                <span> Review by <b class="text-dark">{{ movie.user.username }}</b></span>
+                                <p class="text-justify"> {{ movie.review }} </p>
+                            </div>
+                            <hr> 
+                        
+                        {% endfor %}
+                    {% endif %}
 
-                {% if movies %}
-                    {% for movie in movies %}
-                        <div>
-                            <img src="{{ movie.user.image_profile }}" alt="image" width="50" height="50">
-                            {{ movie.user.username }}
-                            <li> {{ movie.review }} </li>
-                        </div>
-                    
-                    {% endfor %}
-                {% endif %}
-
-                {% if ex_reviews %}
-                    {% for review in ex_reviews %}    
-                        <div>
+                    {% if ex_reviews %}
+                        {% for review in ex_reviews %}    
+                            <div class="p-1"> 
                                 {% set path = review['author_details']['avatar_path']  %}
                                 {% if path %}
-                                    <img src="{{ path }}" alt="image" width="50" height="50">
+                                    <img src="{{ path }}" alt="image" width="50" height="50" class="border border-dark rounded-circle">
                                 {% endif %}
 
-                                {{ review['author'] }}
-                            
-                            <li> {{ review['content'] }}</li>
-                            
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            
-            </div>
+                                <span> Review by <b class="text-dark">{{ review['author'] }}</b></span>                            
+                                <p class="text-justify"> {{ review['content'] }}</p>                                
+                            </div>
+                            <hr> 
+                        {% endfor %}
+                    {% endif %}                
         </div>
-        
-        <a href="/movie_detail/{{ id }}"> Go to movie detail </a>
-        
+     
 
 {% endblock %}

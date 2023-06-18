@@ -6,7 +6,7 @@ from forms import AddUserForm, LoginForm, MovieReccomend, EditUserForm, ReviewFo
 from models import db, connect_db, User, FavoriteCasts, FavoriteMovies
 from sqlalchemy.exc import IntegrityError
 from movie_recommender import movie_suggestions, cosine_sim2
-from api_requests import get_movie_detail, get_cast_detail, get_ids_by_genre, get_reviews
+from api_requests import get_movie_detail, get_cast_detail, get_ids_by_genre, get_reviews, get_trending_movies_info
 
 
 CURR_USER_KEY = "curr_user"
@@ -185,6 +185,8 @@ def show_homepage():
     """Show homepage"""
     form = MovieReccomend()
 
+    trending = get_trending_movies_info()    
+    
     if form.validate_on_submit():
         favorite_title = form.movie_title.data
         
@@ -198,7 +200,8 @@ def show_homepage():
         return redirect(url_for('show_suggestions', suggested_titles=suggested_titles))
           
     else: 
-        return render_template('homepage.html', form=form)
+        return render_template('homepage.html', form=form, trending=trending)
+                               
     
 
 ##############################################################################
@@ -321,7 +324,7 @@ def genre_suggestions(id):
 
     
     movie_info = get_ids_by_genre(id)
-    random_ids = random.sample(movie_info[0], 10)
+    random_ids = random.sample(movie_info[0], 12)
     genre = "".join(movie_info[1]).lower()
     
     suggested_titles = {}
@@ -425,7 +428,7 @@ def edit_movie_review(id):
             flash("Review edited", 'success')
             return redirect(f"/users/{user.id}/reviews")
 
-    return render_template('users/edit.html', form=form, user_id=user.id)
+    return render_template('edit_movie_review.html', form=form, user_id=user.id)
 
 
 

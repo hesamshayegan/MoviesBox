@@ -2,94 +2,75 @@
 
 {% block body_class %}onboarding{% endblock %}
 
+{% block container_class %}container-fluid-custom{% endblock %}
+
 {% block content %}
 
 <main>
-  
-      <!-- Global parnet for all divs -->
-      <div id="myCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel" data-interval="500">
-              
-              <!-- # wrap the sliders -->
-              <div class="carousel-inner">
-                 
-                  <!-- Fixed text -->
-                  <div class="fixed-text">
-                      <h1> Welcome to MoviesBox </h1>
-                      <p> MoviesBox is a free film app that lets you discover movies with ease </p>
-                      
-                      <a href="/signup" class="btn btn-lg btn-darkgreen"> Get Started </a>
-                  </div> 
 
-                  <!-- # tabs for sliders -->
-                  <ul class="carousel-indicators">
-                      
-                      <li data-bs-target="#myCarousel"
-                      data-bs-slide-to="0" class="active"> 
-                      </li>
+<div class="homepage row">
+  <div class="leftside col-12 col-md-6">
+    <div id="homeCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
 
-                      <li data-bs-target="#myCarousel"
-                      data-bs-slide-to="1">   
-                      </li>
-
-                      <li data-bs-target="#myCarousel"
-                      data-bs-slide-to="2">   
-                      </li>
-
-                  </ul>
-
-                      <div class="carousel-item active">
-                          <div class="overlay-image"
-                          style="background-image:url(https://image.tmdb.org/t/p/w500///ygO9lowFMXWymATCrhoQXd6gCEh.jpg);">
-                          </div>
-                          <div class="container-slide">
-                              <h1>Example Headline 1</h1>
-                              <p> Test 1   
-                              </p> 
-                          </div>
-                      </div>
-
-                      <div class="carousel-item">
-                              <div class="overlay-image"
-                              style="background-image:url(https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg);">
-                              </div>
-                              <div class="container-slide">
-                                  <h1>Batman</h1>
-                                  <p> Test 2
-                                  </p> 
-                              </div>
-                      </div>
-
-                      <div class="carousel-item">
-                          <div class="overlay-image"
-                          style="background-image:url(https://image.tmdb.org/t/p/w500/iLWzJxatuwwMT76dtMuwh3FEp2X.jpg);">
-                          </div>
-                              <div class="container-slide">
-                                  <h1>The Matrix</h1>
-                                  <p> Test 3
-                                  </p> 
-                              </div>
-                      </div>
-                      
-                      
-              </div>
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        {% for i in range(1, 11) %}
+          <button type="button" data-bs-target="#homeCarousel" data-bs-slide-to="{{ i }}" aria-label="Slide {{ i + 1 }}"></button>
+        {% endfor %}
       </div>
-  
 
-      <div class="movie-form-container">
-        <div class="movie-form">
-          <h1 class="join-message">What to watch</h1>
-          <p> based on your favorite movie</p>
-
-          <form method="POST">
-            {% include "_form.html" %}    
-            <button class="btn btn-lg btn-darkgreen">Suggest</button>
-          </form>
+      <div class="carousel-inner">
+        <div class="fixed-text">
+          <h1 class="display-5"> Welcome to MoviesBox </h1>
+          <p> MoviesBox is a free film app that lets you discover movies with ease </p>
+          <a href="/signup" class="btn btn-lg btn-darkgreen">
+            Get Started
+          </a>
         </div>
+
+          <a href="/movie_detail/840326">
+            <div class="carousel-item active" style="background-image: url('https://image.tmdb.org/t/p/w500/ygO9lowFMXWymATCrhoQXd6gCEh.jpg')">
+              <div class="image-overlay"></div>              
+            </div>
+          </a>
+          {% for id in trending.keys()%}
+                {% set img_url = trending[id]['img_url'] %}                
+                <a href="/movie_detail/{{ id }}">
+                  <div class="carousel-item" style="background-image: url('{{ img_url }}')">
+                    <div class="image-overlay"></div>
+                  </div>
+                </a>               
+          {% endfor %}
       </div>
-          
-</main>     
-        
-      
-  
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+
+    </div>
+  </div>
+
+  <div class="rightside col-12 col-md-6 d-flex align-items-center justify-content-center">
+    <div class="movie-form-container">
+      <div class="movie-form">
+        <h1 class="join-message text-center">What to Watch</h1>
+        <p> based on your favorite movie</p>
+
+        <form method="POST">
+          {% include "_form.html" %}    
+          <button class="btn btn-lg btn-darkgreen">Suggest</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</main> 
 
 {% endblock %}

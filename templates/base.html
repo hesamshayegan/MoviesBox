@@ -11,6 +11,11 @@
   <script src="https://unpkg.com/popper"></script>
   <script src="https://unpkg.com/bootstrap"></script>
   <link rel="stylesheet" href="/static/stylesheets/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&display=swap" rel="stylesheet">
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,38 +26,52 @@
   <body class="{% block body_class %}{% endblock %}">
 
         <header>
-            <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-              <div class="container-fluid">
-                <div class="navbar-header"> 
-                   
-                    <a href="/homepage">MoviesBox</a>
-                    <a href="/all_reviews"> Movie Reviews </a>
-                </div>
 
-                <ul class="nav navbar-nav navbar-right">
-                  
-                  {% if not g.user %}
-                  <li><a href="/signup">Sign up</a></li>
-                  <li><a href="/login">Log in</a></li>      
-                  {% else %}
-                  <li>
-                    <a href="/users/{{ g.user.id }}">
-                      {{ g.user.username }}
-                      <img src="{{ g.user.image_profile }}" alt="{{ g.user.username }}">
-                    </a>
+          <nav class="navbar navbar-expand-lg navbar-dark fixed-top bg-dark">
+            
+            <div class="container-fluid">
+                <a href="https://www.linkedin.com/in/hesam-shayegan/?locale=en_US">
+                    <i class="fa-brands fa-linkedin fa-xl" style="color: #0e58d8;"></i>
+                </a>
+                <a href="/homepage" class="brand p-2">MoviesBox</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              
+              <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
                   </li>
-                  <li><a href="/favorite_movies"> Favorite Movies </a></li>
-                  <li><a href="/favorite_casts"> Favorite Casts </a></li>
-                  <li><a href="/users/edit"> Edit profile </a></li>
-                  <li><a href="/logout">Log out</a></li> 
-                  {% endif %}
-                  
+                  <li class="nav-item text-center">
+                    <a href="/all_reviews"> Movie Reviews </a>
+                  </li>
                 </ul>
+                <ul class="nav navbar-nav navbar-right">                    
+                    {% if not g.user %}
+                    <li><a href="/signup">Sign up</a></li>
+                    <li><a href="/login">Log in</a></li>      
+                    {% else %}
+                    <li>
+                        <a href="/users/{{ g.user.id }}">
+                        {{ g.user.username }}
+                        <img src="{{ g.user.image_profile }}" alt="{{ g.user.username }}">
+                        </a>
+                    </li>
+                    <li><a href="/favorite_movies"> Favorite Movies </a></li>
+                    <li><a href="/favorite_casts"> Favorite Casts </a></li>
+                    <li><a href="/users/{{ g.user.id }}/reviews">My Reviews</a>  </li>
+                    <li><a href="/users/edit"> Edit profile </a></li>
+                    <li><a href="/logout">Log out</a></li> 
+                    {% endif %}    
+                </ul>
+    
               </div>
-            </nav>
+            </div>
+          </nav>
+          
       </header>      
 
-      <div class="container">
+      <div class="{% block container_class %}container{% endblock %}">
         {% for category, message in get_flashed_messages(with_categories=True) %}
         <div class="alert alert-{{ category }}">{{ message }}</div>
         {% endfor %}
@@ -62,14 +81,9 @@
 
         {% endblock %}
 
-      </div>
+       </div>
       
 
 
   </body>
 </html>
-
-<!-- <link rel="stylesheet"
-        href="https://use.fontawesome.com/releases/v5.3.1/css/all.css">
-  <link rel="stylesheet" href="/static/stylesheets/style.css">
-  <link rel="shortcut icon" href="/static/favicon.ico"> -->
