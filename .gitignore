@@ -3,7 +3,5 @@
 dataset/generate_input_dataset.py
 dataset/movie_detail.py
 dataset/movie_list.py
+dataset/drop_duplicates.py
 __pycache__
-templates/index2.html
-templates/index.html
-templates/temporary.html

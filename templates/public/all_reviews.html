@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block body_class %}movie-bg{% endblock %}
+
+{% block content %}
+
+        <div class="all-reviews">
+                <h1>RANDOM MOVIE REVIEWS</h1>
+                <hr>
+                        {% for movie in random_reviews%}  
+                                <div class="p-1"> 
+                                        <img src="{{ movie.user.image_profile }}" alt="image" width="50" height="50" class="border border-dark rounded-circle">
+                                        <span> Review by <b class="text-dark"> {{ movie.user.username }} </b> </span>   
+                                        <span> about <a href="/movie_detail/{{ movie.id }}">{{ movie.title }} </a>  </span>
+                                        <p class="text-justify"> {{ movie.review }} </p>
+                                </div>
+                                <hr> 
+                        {% endfor %}
+        </div>
+
+{% endblock %}

@@ -77,14 +77,28 @@ def get_movie_detail(id):
 
         id = id
         title = resp['title']
-        poster_path = resp['images']['posters'][0]['file_path']
-        img_url = IMAGE_BASE_URL + poster_path
-        popularity = round(float(resp['popularity']), 2)
-        overview = resp['overview']
-        runtime = resp['runtime']
-        genres = resp['genres']
-        casts = resp['credits']['cast']
-        crews = resp['credits']['crew']
+        if resp['images']['posters']:
+            poster_path = resp['images']['posters'][0]['file_path']
+            img_url = IMAGE_BASE_URL + poster_path
+        else:
+            img_url = "/static/images/noImage.jpg"
+        if resp['popularity']:        
+            popularity = round(float(resp['popularity']), 2)
+        if resp['overview']:
+            overview = resp['overview']
+        else:
+            overview = "No information available."
+        if resp['runtime']:
+            runtime = resp['runtime']
+        else:
+            runtime = "No information available."
+        if resp['genres']:
+            genres = resp['genres']
+        casts = []
+        if resp['credits']['cast']:
+            casts = resp['credits']['cast']
+        if resp['credits']['crew']:
+            crews = resp['credits']['crew']
         
         director = {}
         for crew in crews:
@@ -137,16 +151,22 @@ def get_cast_detail(id):
     
     id=id
     name =  resp['name']
-    img_url = IMAGE_BASE_URL + resp['images']['profiles'][0]['file_path']
-    biography = resp['biography']
+    if resp['images']['profiles']: 
+        img_url = IMAGE_BASE_URL + resp['images']['profiles'][0]['file_path']
+    else:
+        img_url = "/static/images/noImage.jpg"
+    if resp['biography']:
+        biography = resp['biography']
+    else:
+        biography = "No information available."
     movies = resp['movie_credits']['cast']
     movies.sort(key=lambda x: x['popularity'], reverse=True)
     
-    max_pop = movies[0]['popularity']
-    for movie in movies:
-        movie['popularity'] = int(round((movie['popularity'] / max_pop) * 100))
-    
-
+    if movies:
+        max_pop = movies[0]['popularity']
+        for movie in movies:
+            movie['popularity'] = int(round((movie['popularity'] / max_pop) * 100))
+      
     cast = {
         id: {
             'name': name,

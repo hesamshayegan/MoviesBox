@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block body_class %}movie-bg{% endblock %}
+
+{% block content %}
+
+{% if movie %}
+
+{% for id, movie in movie.items() %}
+<div class="movie-detail-content">
+    <div class="row p-2">
+        <div class="col-12">
+            <h1>{{ movie['title'] }}</h1>
+        </div>
+    </div>        
+
+    <div class="movie">
+        <div class="row p-2" height="600">
+            <div class="column-1">
+                <img src="{{ movie['img_url'] }}" alt="image" width="300" height="380" class="border border-dark rounded"> 
+            </div>
+
+            <div class="column-2">
+                <div>
+                    <span>Director(s):</span>
+                    {% for director_id, director in movie['director'].items() %}
+                        <div><a href="/cast_detail/{{ director_id }}">{{ director }}</a></div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <span>Release date:</span>
+                    <span>{{ movie['release_date'] }}</span>
+                </div>
+                <div>
+                    <span>Duration: {{ movie['runtime'] }} minutes</span>
+                </div>
+                <div>
+                    <a href="/reviews/{{ id }}">Reviews</a>
+                </div>
+                <div>
+                    {% for genre in movie['genres'] %}
+                        <a href="/genre_suggestions/{{ genre.id }}" id="{{ genre.id }}" class="genre-badge btn btn-light btn-sm">{{ genre.name }}</a>
+                    {% endfor %}
+                </div>
+                <div class="add-favorites">
+                    <a href="/favorite_movie_new/{{ id }}">
+                        <i class="fa-solid fa-circle-plus" style="color: #206027;"></i>
+                    </a>
+                    Add to favorites
+                </div>
+            </div>
+
+            <div class="column-3"> 
+                <div class="iframe-container">
+                    <iframe width="620" height="348.75" src="{{ movie['video_url'] }}?autoplay=1" frameborder="0" allowfullscreen allow="autoplay"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row p-2 justify-content-center">
+        <h2>Overview</h2>
+        <div> 
+            <p class="text-justify">{{ movie['overview'] }}</p>
+        </div>
+    </div>
+
+    <div class="row p-2 justify-content-center">
+        <h2>Starring</h2>
+        {% set max_length = 5 if movie['casts']|length > 5 else movie['casts']|length %}
+        {% for cast in movie['casts'][:max_length] %}
+            <div class="col-sm-12 col-md-6 col-lg-2 p-2">
+                {% if cast.profile_path %}
+                    <img src="{{ IMAGE_BASE_URL+cast.profile_path }}" alt="image" width="150" height="200" class="border border-dark rounded">
+                    <div><a href="/cast_detail/{{ cast.id }}">{{ cast.name }}</a></div>
+                    <span>{{ cast.character }}</span>
+                {% endif %}
+            </div>
+        {% endfor %}   
+    </div>
+</div>
+{% endfor %}
+{% endif %}
+</div>
+{% endblock %}
+

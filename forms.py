@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, RadioField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length
+from wtforms.validators import DataRequired, Email, Length, InputRequired
 
 
 class AddUserForm(FlaskForm):
@@ -37,3 +37,9 @@ class ReviewForm(FlaskForm):
     review = TextAreaField('What did you think of the movie or the person overall? Would you recommend it to others?',
                            validators=[DataRequired(),
                             Length(min=10, max=250)])
+
+class Confirmation(FlaskForm):
+    """ Confirmation form for account deletion """
+    confirmation = RadioField('Delete account confirmation',
+                              choices=[('yes', 'Yes'), ('no', 'No')],
+                              validate_choice=False)

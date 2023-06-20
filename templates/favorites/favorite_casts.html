@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block body_class %}movie-bg{% endblock %}
+
+{% block content %}
+
+<div class="favorite-casts">
+    <div class="row">
+        <h1> MY CASTS </h1>
+        {% for cast in casts_info %}
+        {% for id in cast.keys() %}
+            <div class="col-12 col-sm-6 col-md-4 col-lg-2 d-flex justify-content-center custom-card">
+                <div class="card border" style="max-width: 24rem;">
+                    <img class="card-img-top" src="{{ cast[id]['img_url'] }}" alt="image" width="300" height="300">
+                    <div class="card-header"><a href="/cast_detail/{{ id }}"> {{ cast[id]['name'] }} </a> </div>
+                    <div class="card-body">                                                    
+                        <a href="/favorite_casts/{{ id }}/delete">
+                        <i class="fa-solid fa-trash" style="color: #ff0000;"></i>
+                        </a>
+                        Delete the Cast
+                        </div>    
+                </div>
+            </div>      
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div> 
+
+
+{% endblock %}
+

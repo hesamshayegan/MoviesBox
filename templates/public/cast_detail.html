@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block body_class %}movie-bg{% endblock %}
+
+{% block content %}
+
+<div class="cast-detail">
+    {% if cast %}
+        {% set keep_trailing_newline = True %}
+        {% for id, cast in cast.items() %}
+            <div class="row p-2">
+                <div class="col-12">
+                <h1> {{ cast['name'] }} </h1>
+                </div>
+            </div>
+            <div class="row p-2">
+                <div class="col-12 col-md-4 d-flex flex-column align-items-center">
+                <img src="{{ cast['img_url'] }}" alt="image" width="250" height="330" class="border border-dark rounded">
+                <div class="add-favorites p-2 mt-2">
+                    <div> 
+                        <a href="/favorite_cast_new/{{ id }}">
+                        <i class="fa-solid fa-circle-plus" style="color: #206027;"></i>
+                        </a>                    
+                        <span>Add to favorites</span>
+                    </div>
+                </div>
+                </div>
+                <div class="col-12 col-md-8">
+                    <p class="text-justify"> {{ cast['biography']|replace('\n\n', '<br>')|safe }} </p>
+                </div>
+                <hr>
+            </div>
+            <div class="row p-1 justify-content-center">
+                <h2> Popular movies of {{ cast['name'] }} </h2>
+                {% if cast['movies'] %}              
+                    {% set max_length = 5 if cast['movies']|length > 5 else cast['movies']|length %}
+                    {% for movie in cast['movies'][:max_length] %}
+                        <div class="cast-movie col-sm-12 col-md-6 col-lg-2 p-2">
+                            {% if movie.poster_path %}                    
+                                <img src="{{ IMAGE_BASE_URL+movie.poster_path }}" alt="image" width="150" height="200" class="border border-dark rounded">
+                                <div><a href="/movie_detail/{{ movie.id }}"> {{ movie.title }} </a></div>
+                                <div>{{ movie.character }}</div>                            
+                                <div class="circle">
+                                    <div>{{ movie.popularity }}%</div>
+                                </div>                                                            
+                            {% endif %}
+                        </div>                    
+                    {% endfor %}
+                {% else %}
+                        <p> No movie available. </p>
+                {% endif %}   
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>
+        
+
+{% endblock %}
+

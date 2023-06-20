@@ -6,23 +6,25 @@
 
     {% if g.user.id == user.id %}
            
-            <img src="{{ user.image_profile }}" width="200" height="200" alt="image-profile">
-            <h1>{{ user.username }}</h1>
-            <p>email: {{ user.email }}</p>
-            
-            {% if user.username == 'demo' %}
-                <p>The edit and delete options are not available for the demo account.</p>
-            {% else %}
-                <div class="user-profile d-flex flex-column">
-                    <a href="/users/edit">Edit Profile</a>
-                    <a href="/favorite_movies"> Favorite Movies </a>
-                    <a href="/favorite_casts"> Favorite Casts </a>
-                    <a href="/users/{{ g.user.id }}/reviews">My Reviews</a>
+            <div class="user-profile">
+                <img src="{{ user.image_profile }}" width="200" height="200" alt="image-profile">
+                <h1>{{ user.username }}</h1>
+                <p>email: {{ user.email }}</p>
+                
+                {% if user.username == 'demo' %}
+                    <p>The edit and delete options are not available for the demo account.</p>
+                {% else %}
+                    <div class="d-flex flex-column">
+                        <a href="/users/edit">Edit Profile</a>
+                        <a href="/favorite_movies"> Favorite Movies </a>
+                        <a href="/favorite_casts"> Favorite Casts </a>
+                        <a href="/users/{{ g.user.id }}/reviews">My Reviews</a>
 
-                    <form method="POST" action="/users/delete" class="form-inline">
-                        <button class="btn btn-danger btn-sm p-1">Delete Account</button>
-                    </form>
-                </div>
+                        <form method="POST" action="/users/delete" class="form-inline">
+                            <button class="btn btn-danger btn-sm p-1">Delete Account</button>
+                        </form>
+                    </div>
+            </div>
                 
             {% endif %}
 

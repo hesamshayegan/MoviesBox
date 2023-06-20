@@ -21,11 +21,16 @@
         background-color: #d5e6db;
         border: 0px;
         border-radius: 15px;
+        font-family: 'Josefin Sans', sans-serif;        
     }
 
     .form-control li
     {
         list-style-type: none;
+    }
+    
+    .btn {
+        font-family: 'Josefin Sans', sans-serif;      
     }
 
     .btn-darkgreen {
@@ -37,7 +42,7 @@
     .btn-darkgreen:hover {
         background-color: #608863
     }
-    
+     
 
 
     /* ======================= Nav */
@@ -91,7 +96,15 @@
     .homepage {
         --bs-gutter-x: 0;
     }
-    
+
+    .welcome p, .signup_msg p {
+        color: white;
+        font-family: 'Josefin Sans', sans-serif;
+        font-size: 1.25rem;
+        margin: 5px;
+
+    }
+
     .carousel-item {
         position: relative;
         height: 100vh; 
@@ -151,6 +164,30 @@
 
     .movie-form-container input[type="radio"] + label {
         color: rgb(80, 80, 80);
+        font-family: 'Josefin Sans', sans-serif;
+    }
+
+    .movie-form h1, .movie-form p  {
+        font-family: 'Alfa Slab One', cursive; 
+    }
+
+    #movie_title::placeholder {
+        text-align: center;
+    }
+
+    .error_msg {
+        margin: 5px;
+    }
+
+    .error_msg p, .error_msg li {
+        color: rgb(255, 0, 0);
+        font-size: 14px;
+        margin: 5px;
+        font-family: 'Josefin Sans', sans-serif;
+    }
+
+    .error_msg .acceptable p {
+        color: greenyellow
     }
 
     @media (max-width: 844px) {
@@ -164,7 +201,8 @@
     /* ======================= general titles */
 
     .show-suggestions.title h1, .login-form h1, .signup-form h1,
-    .edit-profile-form h1, .create-review h1, .edit-review h1
+    .edit-profile-form h1, .create-review h1, .edit-review h1,
+    .confirmation-form h1
     {
         margin: 10px;  
         margin: 10px auto;        
@@ -230,7 +268,7 @@
 
     .movie-detail-content h1, .cast-detail h1 {
         color: rgb(0, 0, 0);
-        font-family: 'Alfa Slab One', cursive;;
+        font-family: 'Alfa Slab One', cursive;
     }
     .movie-detail-content, .cast-detail { 
         font-family: 'Josefin Sans', sans-serif;
@@ -379,6 +417,11 @@
         color: white;
     }
 
+    .user-review p, .all-reviews p, .all-reviews span,
+    .movie-reviews p, .movie-reviews span {
+        font-family: 'Josefin Sans', sans-serif;
+    }
+
     .all-reviews h1, .movie-reviews h1, .user-review h1 {
         color: rgb(255, 255, 255);
         font-family: 'Alfa Slab One', cursive;
@@ -400,6 +443,8 @@
         font-weight: bold;
         text-decoration: none; 
     }
+
+    
     .user-review .movie a {
         color: rgb(0, 0, 0);
     }
@@ -438,6 +483,9 @@
 
     /* ======================= User profile */
     
+    .user-profile p, .user-profile h1 {
+        font-family: 'Josefin Sans', sans-serif;
+    }
     .user-profile a {
         color: rgb(4, 113, 4);
         font-weight: bold;
@@ -449,3 +497,4 @@
         color:rgb(103, 201, 103);
         text-decoration: underline
     }
+

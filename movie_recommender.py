@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 df1=pd.read_csv('dataset/credits.csv')
-df2 = pd.read_csv('dataset/movies.csv')
+df2 = pd.read_csv('dataset/movies_unique.csv')
 
 df1.columns = ['id','cast','crew']
 df2= df2.merge(df1,on='id')
@@ -37,30 +37,36 @@ indices = pd.Series(df2.index, index=df2['title']).drop_duplicates()
 
 # Function that takes in movie title as input and outputs most similar movies
 def movie_suggestions(title, cosine_sim=cosine_sim):
-    # Get the index of the movie that matches the title
-    idx = indices[title]
+    
+    if title in indices:
+        # Get the index of the movie that matches the title
+        idx = indices[title]
 
-    # Get the pairwsie similarity scores of all movies with that movie
-    sim_scores = list(enumerate(cosine_sim[idx]))
+        # Get the pairwsie similarity scores of all movies with that movie
+        sim_scores = list(enumerate(cosine_sim[idx]))
+            
+        # Sort the movies based on the similarity scores
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+        # Get the scores of the 10 most similar movies
+        sim_scores = sim_scores[1:13]
+
+        # Get the movie indices
+        movie_indices = [i[0] for i in sim_scores]
         
-    # Sort the movies based on the similarity scores
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-
-    # Get the scores of the 10 most similar movies
-    sim_scores = sim_scores[1:13]
-
-    # Get the movie indices
-    movie_indices = [i[0] for i in sim_scores]
+        # Create a dictionary of the most similar movies
+        titles = df2['title'].iloc[movie_indices].tolist()
+        ids = df2['id'].iloc[movie_indices].tolist()
+        movies = dict(zip(ids, titles))
+        
+        # Return the suggested movies
+        return movies
     
-    # Create a dictionary of the top 10 most similar movies
-    titles = df2['title'].iloc[movie_indices].tolist()
-    ids = df2['id'].iloc[movie_indices].tolist()
-    movies = dict(zip(ids, titles))
-    
-    # Return the suggested movies
-    return movies
+    else:
+        error_msg = "This is not a valid IMDB title"
+        return error_msg
 
-movie_suggestions('The Dark Knight Rises')
+# movie_suggestions('Avatar')
 
 ########################################################################
 ##### Recommender System based on Genres, keywords, crew, and cast #####
@@ -141,4 +147,4 @@ df2 = df2.reset_index()
 indices = pd.Series(df2.index, index=df2['title'])
 
 
-movie_suggestions('JFK', cosine_sim2) # dir, cast, genres, keywords
+# movie_suggestions('Avatar', cosine_sim2) # dir, cast, genres, keywords

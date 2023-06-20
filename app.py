@@ -1,8 +1,8 @@
 import os, random
-from flask import Flask, render_template, flash, redirect, url_for, session, g
+from flask import Flask, render_template, flash, redirect, url_for, session, g, request
 from flask_debugtoolbar import DebugToolbarExtension
 
-from forms import AddUserForm, LoginForm, MovieReccomend, EditUserForm, ReviewForm
+from forms import AddUserForm, LoginForm, MovieReccomend, EditUserForm, ReviewForm, Confirmation
 from models import db, connect_db, User, FavoriteCasts, FavoriteMovies
 from sqlalchemy.exc import IntegrityError
 from movie_recommender import movie_suggestions, cosine_sim2
@@ -10,7 +10,6 @@ from api_requests import get_movie_detail, get_cast_detail, get_ids_by_genre, ge
 
 
 CURR_USER_KEY = "curr_user"
-
 IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 
 
@@ -29,12 +28,14 @@ app.app_context().push()
 connect_db(app)
 
 
+
 ##############################################################################
 # User signup/login/logout routes
+##############################################################################
 
 @app.before_request
 def add_user_to_g():
-    """If we're logged in, add curr user to Flask global."""
+    """ If logged in, add curr user to Flask global. """
 
     if CURR_USER_KEY in session:
         g.user = User.query.get(session[CURR_USER_KEY])
@@ -55,15 +56,10 @@ def do_logout():
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
-    """Handle user signup.
+    """ User signup process: Create and add a new user to the database.
+    If the form is invalid, display the form again.
+    If a user with the same username already exists, show a flash message and display the form again. """
 
-    Create new user and add to DB. Redirect to home page.
-
-    If form not valid, present form.
-
-    If there already is a user with that username: flash message
-    and re-present form.
-    """
     if CURR_USER_KEY in session:
         del session[CURR_USER_KEY]
     form = AddUserForm()
@@ -84,15 +80,15 @@ def signup():
 
         do_login(user)
 
-        flash("Welcome to MoviesBox! We hope you enjoy your time.", 'success')
-        return redirect("/homepage")
+        signup_msg = "Welcome to MoviesBox! We hope you enjoy your time."
+        return redirect(url_for("show_homepage", signup_msg=signup_msg ))
 
     else:
         return render_template('users/signup.html', form=form)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
-    """Handle user login."""
+    """ Handle user login. """
 
     form = LoginForm()
 
@@ -102,8 +98,8 @@ def login():
 
         if user:
             do_login(user)
-            flash(f"Hi {user.username}! Hope you find the perfect movie to watch tonight", "success")
-            return redirect("/homepage")
+            welcome_msg = f"Hi {user.username}! Hope you find perfect movies to watch tonight."
+            return redirect(url_for("show_homepage", welcome_msg=welcome_msg ))
 
         flash("Invalid credentials.", 'danger')
 
@@ -112,7 +108,7 @@ def login():
 
 @app.route('/logout')
 def logout():
-    """Handle logout of user."""
+    """ Handle logout of user. """
 
     do_logout()
 
@@ -123,17 +119,20 @@ def logout():
 
 @app.route('/users/<int:user_id>')
 def users_show_profile(user_id):
-    """Show user profile."""
+    """ Show user profile. """
 
     user = User.query.get_or_404(user_id)
 
     return render_template('users/user_profile.html', user=user)
 
+
+
 ##############################################################################
 # Edit user profile
+##############################################################################
 @app.route('/users/edit', methods = ["GET", "POST"])
 def user_edit_profile():
-    """Update profile for current user."""
+    """ Update profile for current user. """
 
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -159,57 +158,88 @@ def user_edit_profile():
 
 ##############################################################################
 # Delete user profile
+##############################################################################
 @app.route('/users/delete', methods=["GET", "POST"])
 def delete_user():
-    """Delete user."""
+    """ Delete the user acccount. """
+
+    form = Confirmation()
 
     if not g.user:
         flash("Please sign up or login", "danger")
         return redirect("/signup")
 
-    do_logout()
+    if form.validate_on_submit():
+        confirmation = form.confirmation.data
+        if confirmation == 'yes':
+            do_logout()
+            db.session.delete(g.user)
+            db.session.commit()
+            flash("Account has been deleted. Hope to see you soon again!", "success")
+            return redirect("/signup")
+        
+        else:
+            flash("Account deletion canceled.", "info")
+            return redirect(f"/users/{g.user.id}")
 
-    db.session.delete(g.user)
-    db.session.commit()
-
-    flash("Account has been deleted. Hope to see you soon again!", "success")
-    return redirect("/signup")
+    return render_template("users/confirmation.html", form=form)
 
 
 
 ##############################################################################
 # Homepage route
 ##############################################################################
-@app.route('/homepage' , methods = ["GET", "POST"])
+@app.route('/')
+def home():
+    """ Redirect to the homepage """
+
+    return redirect('/homepage')
+
+
+
+##############################################################################
+# Homepage route
+##############################################################################
+@app.route('/homepage', methods = ["GET", "POST"])
 def show_homepage():
-    """Show homepage"""
+    """ Show homepage. """
+
+    welcome_msg = request.args.get("welcome_msg", "")
+    signup_msg  =  request.args.get("signup_msg", "")
+    
     form = MovieReccomend()
 
-    trending = get_trending_movies_info()    
+    trending = get_trending_movies_info()
     
     if form.validate_on_submit():
         favorite_title = form.movie_title.data
         
         if form.content.data == 'overview':
             suggested_titles = movie_suggestions(favorite_title)
+            
         else:
             suggested_titles = movie_suggestions(favorite_title, cosine_sim2)
+
+        # if the user input doesn't exist in the database 
+        if isinstance(suggested_titles, str):
+            error_msg = suggested_titles
+            return render_template('public/homepage.html', form=form, trending=trending, error_msg=error_msg)
         
         session['suggested_titles'] = suggested_titles
-
         return redirect(url_for('show_suggestions', suggested_titles=suggested_titles))
           
     else: 
-        return render_template('homepage.html', form=form, trending=trending)
+        return render_template('public/homepage.html', form=form, trending=trending,
+                                welcome_msg=welcome_msg, signup_msg=signup_msg)
                                
-    
+   
 
 ##############################################################################
 # Movie suggesions route
 ##############################################################################
 @app.route('/suggestions')
 def show_suggestions():
-    """Show movie suggestions"""
+    """ Show movie suggestions. """
     
     # genre status is deactive here
     genre = ""
@@ -228,7 +258,7 @@ def show_suggestions():
         suggested_titles[id] = (title, img_url, popularity)
         
          
-    return render_template('show.html', suggested_titles=suggested_titles,
+    return render_template('public/show.html', suggested_titles=suggested_titles,
                            genre=genre)
                         
 
@@ -238,12 +268,13 @@ def show_suggestions():
 ##############################################################################
 @app.route('/movie_detail/<id>')
 def show_movie_detail(id):
-    """ Show movie detail"""
+    """ Show movie detail. """
     
     movie = get_movie_detail(id)
   
-    return render_template('movie_detail.html', movie=movie,
+    return render_template('public/movie_detail.html', movie=movie,
                            IMAGE_BASE_URL=IMAGE_BASE_URL)
+
 
 
 ##############################################################################
@@ -251,7 +282,7 @@ def show_movie_detail(id):
 ##############################################################################
 @app.route('/favorite_movies')
 def favorite_movies():
-    """Show favorite movies.""" 
+    """ Show favorite movies. """ 
 
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -265,14 +296,16 @@ def favorite_movies():
             for movie in movies:
                 movies_info.append(get_movie_detail(movie.id))
         
-        return render_template('favorite_movies.html', movies_info=movies_info)
+        return render_template('favorites/favorite_movies.html', movies_info=movies_info)
+
+
 
 ##############################################################################
 # Add a new movie to favorites 
 ##############################################################################
 @app.route('/favorite_movie_new/<id>')
 def favorite_movie_new(id):
-    """ Save a movie into FavoriteMovies db """
+    """ Save a movie into FavoriteMovies db. """
     
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -293,14 +326,15 @@ def favorite_movie_new(id):
         except IntegrityError as e:
                 flash("Movie already added", 'danger')
                 return redirect(url_for('show_movie_detail', id=id))
-    
+
+
 
 ##############################################################################
 # Delete a movie from favorites
 ##############################################################################
 @app.route('/favorite_movies/<id>/delete')
 def favorite_movie_delete(id):
-    """Delete a favorite movie.""" 
+    """ Delete a favorite movie. """ 
     
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -321,6 +355,7 @@ def favorite_movie_delete(id):
 ##############################################################################
 @app.route('/genre_suggestions/<id>')
 def genre_suggestions(id):
+    """ Generates genre-specific movie suggestions based on the provided 'id'. """
 
     
     movie_info = get_ids_by_genre(id)
@@ -338,7 +373,7 @@ def genre_suggestions(id):
         suggested_titles[id] = (title, img_url, popularity)
         
 
-    return render_template('show.html', suggested_titles=suggested_titles,
+    return render_template('public/show.html', suggested_titles=suggested_titles,
                            genre=genre)
 
 
@@ -348,7 +383,7 @@ def genre_suggestions(id):
 ##############################################################################
 @app.route('/review_movie/<id>', methods=["GET", "POST"])
 def create_movie_review(id):
-    """ Create movie review """
+    """ Create movie review. """
 
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -366,7 +401,7 @@ def create_movie_review(id):
                 return redirect('/favorite_movies')
             
         else:
-                return render_template('create_movie_review.html', form=form)
+                return render_template('favorites/create_movie_review.html', form=form)
 
 
 
@@ -375,14 +410,18 @@ def create_movie_review(id):
 ##############################################################################
 @app.route('/reviews/<id>')
 def show_movie_review(id):
-    """ Show movie reviews """
+    """ Show movie reviews. """
 
-    movies = FavoriteMovies.query.filter_by(id=id).all()
+    movies = FavoriteMovies.query \
+                                .filter_by(id=id) \
+                                .filter(FavoriteMovies.review.isnot(None)) \
+                                .order_by(FavoriteMovies.pk.desc()) \
+                                .all() 
 
     # Reviews from external sources
     ex_reviews = get_reviews(id)
 
-    return render_template('movie_reviews.html', movies=movies, id=id,
+    return render_template('public/movie_reviews.html', movies=movies, id=id,
                            ex_reviews=ex_reviews)
 
 
@@ -392,16 +431,20 @@ def show_movie_review(id):
 ##############################################################################
 @app.route('/users/<id>/reviews')
 def show_user_reviews(id):
-    """ Shows all the reviews that the user wrote """
+    """ Shows all the reviews that the user wrote. """
     
     if not g.user:
         flash("Please sign up or login", "danger")
         return redirect("/signup")
     
-    else:
-        movies = FavoriteMovies.query.filter_by(user_id = id).all()
+    else:        
+        movies = FavoriteMovies.query \
+                                    .filter_by(user_id=id) \
+                                    .filter(FavoriteMovies.review.isnot(None)) \
+                                    .order_by(FavoriteMovies.pk.desc()) \
+                                    .all() 
 
-        return render_template('user_reviews.html', id = int(id), movies=movies)
+        return render_template('favorites/user_reviews.html', id = int(id), movies=movies)
 
 
 
@@ -410,7 +453,7 @@ def show_user_reviews(id):
 ##############################################################################
 @app.route('/reviews/<id>/edit', methods = ["GET", "POST"])
 def edit_movie_review(id):
-    """ Edit movie review """
+    """ Edit a movie review. """
 
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -428,7 +471,29 @@ def edit_movie_review(id):
             flash("Review edited", 'success')
             return redirect(f"/users/{user.id}/reviews")
 
-    return render_template('edit_movie_review.html', form=form, user_id=user.id)
+    return render_template('favorites/edit_movie_review.html', form=form, user_id=user.id)
+
+
+
+##############################################################################
+# Delete review route
+##############################################################################
+@app.route('/reviews/<id>/delete')
+def delete_movie_review(id):
+    """ Delete a movie review. """ 
+
+    if not g.user:
+        flash("Please sign up or login", "danger")
+        return redirect("/signup")
+    
+    else:
+        movie = FavoriteMovies.query.filter_by(id=id, user_id=g.user.id).first_or_404()
+                
+        movie.review = None
+        db.session.commit()
+        
+        flash("Review deleted", 'success')
+        return redirect(f"/users/{g.user.id}/reviews")
 
 
 
@@ -437,12 +502,16 @@ def edit_movie_review(id):
 ##############################################################################
 @app.route('/all_reviews')
 def show_all_reviews():
-    """ Show selected reviews from random users """
+    """ Show selected reviews from random users. """
     
-    movies = FavoriteMovies.query.all()
+    movies = FavoriteMovies.query \
+                                .filter(FavoriteMovies.review.isnot(None)) \
+                                .order_by(FavoriteMovies.pk.desc()) \
+                                .all()    
+
     random_reviews = random.sample(movies, 5)
 
-    return render_template('all_reviews.html', random_reviews= random_reviews)
+    return render_template('public/all_reviews.html', random_reviews= random_reviews)
 
 
 
@@ -451,11 +520,11 @@ def show_all_reviews():
 ##############################################################################
 @app.route('/cast_detail/<id>')
 def show_cast_detail(id):
-    """ Show cast detail """
+    """ Show cast detail. """
     
     cast = get_cast_detail(id)
        
-    return render_template('cast_detail.html', cast=cast,
+    return render_template('public/cast_detail.html', cast=cast,
                            IMAGE_BASE_URL=IMAGE_BASE_URL)
 
 
@@ -464,7 +533,7 @@ def show_cast_detail(id):
 ##############################################################################
 @app.route('/favorite_casts')
 def favorite_casts():
-    """Show favorite casts.""" 
+    """ Show favorite casts. """ 
 
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -478,14 +547,16 @@ def favorite_casts():
             for cast in casts:
                 casts_info.append(get_cast_detail(cast.id))
 
-        return render_template('favorite_casts.html', casts_info=casts_info)
+        return render_template('favorites/favorite_casts.html', casts_info=casts_info)
  
+
+
 ##############################################################################
 # Add a new cast to favorites 
 ##############################################################################
 @app.route('/favorite_cast_new/<id>')
 def favorite_cast_new(id):
-    """ Save a cast into FavoriteCasts db """
+    """ Save a cast into FavoriteCasts db. """
     
     if not g.user:
         flash("Please sign up or login", "danger")
@@ -506,14 +577,15 @@ def favorite_cast_new(id):
         except IntegrityError as e:
                 flash("Cast already added", 'danger')
                 return redirect(url_for('show_cast_detail', id=id))
-    
+
+
 
 ##############################################################################
 # Delete a cast from favorites
 ##############################################################################
 @app.route('/favorite_casts/<id>/delete')
 def favorite_cast_delete(id):
-    """Delete a favorite cast.""" 
+    """ Delete a favorite cast. """ 
 
     if not g.user:
         flash("Please sign up or login", "danger")
