@@ -83,6 +83,7 @@ Eli_review = FavoriteMovies(
                 user_id = 5,
             )
 
+
 db.session.add_all([Bob_review, Jake_review, Jake_review2, Sara_review, Eli_review])
 db.session.commit()
 

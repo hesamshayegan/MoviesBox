@@ -50,11 +50,14 @@
                 </div>
             </div>
 
+            {% if movie['video_url'] %}
             <div class="column-3"> 
                 <div class="iframe-container">
                     <iframe width="620" height="348.75" src="{{ movie['video_url'] }}?autoplay=1" frameborder="0" allowfullscreen allow="autoplay"></iframe>
                 </div>
             </div>
+            {% endif %}
+
         </div>
     </div>
 

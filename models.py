@@ -2,6 +2,7 @@
 
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import validates
 
 bcrypt = Bcrypt()
 db = SQLAlchemy()
@@ -44,7 +45,7 @@ class User(db.Model):
     @classmethod
     def signup(cls, username, email, password, image_profile):
         """Sign up user.
-
+        
         Hashes password and adds user to system.
         """
 
@@ -62,14 +63,9 @@ class User(db.Model):
     
     @classmethod
     def authenticate(cls, username, password):
-        """Find user with `username` and `password`.
-
-        This is a class method (call it on the class, not an individual user.)
-        It searches for a user whose password hash matches this password
-        and, if it finds such a user, returns that user object.
-
-        If can't find matching user (or if password is wrong), returns False.
-        """
+        """ The class method finds a user by their password hash 
+        and returns the user object if found, or False if not found. """
+        
 
         user = cls.query.filter_by(username=username).first()
 
@@ -107,6 +103,13 @@ class FavoriteCasts(db.Model):
         db.ForeignKey('users.id', ondelete='CASCADE'),
         nullable=False,
     )
+
+    # Prevent the model from adding casts without id
+    @validates("id")
+    def validate_id(self, key, value):
+        if value is None:
+            raise ValueError("cast id cannot be empty.")
+        return value
 
     # With this unique constraint in place, the same user is not be able to add the same cast multiple times. 
     # However, different users can still add the same person to their favorite casts. 
@@ -146,6 +149,13 @@ class  FavoriteMovies(db.Model):
         db.ForeignKey('users.id', ondelete='CASCADE'),
         nullable=False,
     )
+
+    # Prevent the model from adding movies without id
+    @validates("id")
+    def validate_id(self, key, value):
+        if value is None:
+            raise ValueError("movie id cannot be empty.")
+        return value
 
     # With this unique constraint in place, the same user is not be able to add the same movie multiple times. 
     # However, different users can still add the same film to their favorite movies. 

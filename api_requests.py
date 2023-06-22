@@ -97,6 +97,7 @@ def get_movie_detail(id):
         casts = []
         if resp['credits']['cast']:
             casts = resp['credits']['cast']
+        crews = []
         if resp['credits']['crew']:
             crews = resp['credits']['crew']
         
@@ -105,20 +106,25 @@ def get_movie_detail(id):
             if crew['job'] == 'Director':
                 director[crew['id']] = crew['name']
 
-        date = resp['release_date']
-        if date:
+        if resp['release_date']:
+            date = resp['release_date']
             datetime_obj = datetime.datetime.strptime(date, "%Y-%m-%d")
             # Change the format of the datetime object
             release_date = datetime_obj.strftime("%B %d, %Y")
         else:
             release_date = 'Unknown'
 
-        videos = resp['videos']['results']
+        videos = None
+        # Check if there are videos
+        if resp['videos']['results']:
+            videos = resp['videos']['results']
+        
         video_urls = []
-        # Check if there is a trailer available from YouTube
-        for video in videos:
-            if video['type'] == 'Trailer' and video['site'] == 'YouTube': 
-                video_urls.append(video['key'])
+        if videos:
+            # Check if there is a trailer available from YouTube
+            for video in videos:
+                if video['type'] == 'Trailer' and video['site'] == 'YouTube': 
+                    video_urls.append(video['key'])
                               
         
         if video_urls:
