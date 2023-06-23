@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, RadioField, TextAreaField
-from wtforms.validators import DataRequired, Email, Length, InputRequired
+from wtforms.validators import DataRequired, Email, Length
 
 
 class AddUserForm(FlaskForm):

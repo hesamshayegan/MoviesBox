@@ -21,27 +21,27 @@ demo_user = User.signup(
             )
 Bob = User.signup(
                 username='Bob',
-                password='123456',
+                password='p@ssw0rd123',
                 email='Bob@MoviesBox.com',
                 image_profile= "/static/images/Bob.png",
             )
 Jake = User.signup(
                 username='Jake',
-                password='123456',
+                password='Th!s1s@P@ssw0rd',
                 email='Jake@MoviesBox.com',
                 image_profile= "/static/images/Jake.jpeg",
             )
 
 Sara = User.signup(
                 username='Sara',
-                password='123456',
+                password='Th3R4nd0mP@ssw0rd',
                 email='Sara@MoviesBox.com',
                 image_profile= "/static/images/Sara.png",
             )
 
 Eli = User.signup(
                 username='Eli',
-                password='123456',
+                password='1234ABCDE!@#',
                 email='Eli@MoviesBox.com',
                 image_profile= "/static/images/Eli.jpeg",
             )
