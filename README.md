@@ -41,7 +41,7 @@ Designed using the GenMyModel Database Diagram Online
 * Python 3.10.6
 * SQLAlchemy
 * Flask
-* Postgres
+* PostgreSQL
 * HTML
 * CSS
 * Bootstrap
