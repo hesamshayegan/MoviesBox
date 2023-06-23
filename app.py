@@ -18,7 +18,7 @@ app = Flask(__name__)
 # Get DB_URI from environ variable (useful for production/testing) or,
 # if not set there, use development local db.
 app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql:///MoviesBox_db'))
+    os.environ.get('DATABASE_URL', 'postgresql://esnegxrc:2qSG3PHWxUKMp_eO5TuTjOj86fQylCcR@mahmud.db.elephantsql.com/esnegxrc'))
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "Chicken6768")
