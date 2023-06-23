@@ -1,4 +1,5 @@
 import os, random
+from dotenv import load_dotenv
 from flask import Flask, render_template, flash, redirect, url_for, session, g, request
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -14,14 +15,12 @@ IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 
 
 app = Flask(__name__)
+load_dotenv()
 
-# Get DB_URI from environ variable (useful for production/testing) or,
-# if not set there, use development local db.
-app.config['SQLALCHEMY_DATABASE_URI'] = (
-    os.environ.get('DATABASE_URL', 'postgresql://esnegxrc:2qSG3PHWxUKMp_eO5TuTjOj86fQylCcR@mahmud.db.elephantsql.com/esnegxrc'))
+app.config['SQLALCHEMY_DATABASE_URI'] = (os.environ.get('DATABASE_URL'))
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "Chicken6768")
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # toolbar = DebugToolbarExtension(app)
 
 app.app_context().push()

@@ -15,7 +15,6 @@ os.environ['DATABASE_URL'] = "postgresql:///MoviesBox_test"
 
 from app import app
 
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql:///MoviesBox_test"
 app.config['SQLALCHEMY_ECHO'] = False
 
 db.create_all()

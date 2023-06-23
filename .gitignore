@@ -5,4 +5,4 @@ dataset/movie_detail.py
 dataset/movie_list.py
 dataset/drop_duplicates.py
 __pycache__
-creds.py
+.env

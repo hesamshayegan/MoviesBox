@@ -1,15 +1,22 @@
 """Seed database."""
 
+import os
 from app import db
 from models import User, FavoriteMovies
-from creds import p2, p3, p4, p5
+from dotenv import load_dotenv
 
-# createdb MoviesBox_db
+load_dotenv()
 
 db.drop_all()
 db.create_all()
 
 print('Database created')
+
+# Get values from .env
+p2 = os.environ.get("p2")
+p3 = os.environ.get("p3")
+p4 = os.environ.get("p4")
+p5 = os.environ.get("p5")
 
 # If table isn't empty, empty it
 User.query.delete()
