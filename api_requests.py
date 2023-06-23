@@ -1,7 +1,7 @@
 import requests, datetime, random
+from creds import API_KEY
 
 API_BASE_URL = 'https://api.themoviedb.org/3/'
-API_KEY = '367dc9d5b1711d163786e1535161f93b'
 IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500/'
 YOUTUBE_BASE_URL = 'https://www.youtube.com/embed/'
 

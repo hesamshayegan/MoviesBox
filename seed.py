@@ -2,6 +2,7 @@
 
 from app import db
 from models import User, FavoriteMovies
+from creds import p2, p3, p4, p5
 
 # createdb MoviesBox_db
 
@@ -21,27 +22,27 @@ demo_user = User.signup(
             )
 Bob = User.signup(
                 username='Bob',
-                password='p@ssw0rd123',
+                password= p2,
                 email='Bob@MoviesBox.com',
                 image_profile= "/static/images/Bob.png",
             )
 Jake = User.signup(
                 username='Jake',
-                password='Th!s1s@P@ssw0rd',
+                password= p3,
                 email='Jake@MoviesBox.com',
                 image_profile= "/static/images/Jake.jpeg",
             )
 
 Sara = User.signup(
                 username='Sara',
-                password='Th3R4nd0mP@ssw0rd',
+                password= p4,
                 email='Sara@MoviesBox.com',
                 image_profile= "/static/images/Sara.png",
             )
 
 Eli = User.signup(
                 username='Eli',
-                password='1234ABCDE!@#',
+                password= p5,
                 email='Eli@MoviesBox.com',
                 image_profile= "/static/images/Eli.jpeg",
             )

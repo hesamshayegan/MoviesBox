@@ -54,4 +54,4 @@ Please follow these steps to run the application on your machine:
     source venv/bin/activate
     pip install -r requirements.txt
     flask run
-    
+Before running, please make sure to include your API key.  
