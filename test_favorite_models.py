@@ -1,4 +1,4 @@
-"""User model tests."""
+"""Favorite models tests."""
 
 # createdb MoviesBox_test
 # FLASK_ENV=production python3 -m unittest test_favorite_models.py
