@@ -1,8 +1,17 @@
 import pandas as pd
 import numpy as np
 
-df1=pd.read_csv('dataset/credits.csv')
-df2 = pd.read_csv('dataset/movies_unique.csv')
+# credits
+url1='https://drive.google.com/file/d/1pkMwgHJ2zkUgmoWxigEpKns6Ua_j8Bal/view?usp=drive_link'
+url1_id=url1.split('/')[-2]
+dwn_url1='https://drive.google.com/uc?id=' + url1_id
+df1=pd.read_csv(dwn_url1)
+
+# movies
+url2='https://drive.google.com/file/d/1i8FBmudQ0v13baRq6WPbrfhzhM1sgANW/view?usp=drive_link'
+url2_id=url2.split('/')[-2]
+dwn_url2='https://drive.google.com/uc?id=' + url2_id
+df2 = pd.read_csv(dwn_url2)
 
 df1.columns = ['id','cast','crew']
 df2= df2.merge(df1,on='id')
