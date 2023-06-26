@@ -1,5 +1,3 @@
-runtime: python
+runtime: python 310
 env: flex
 entrypoint: gunicorn -b :$PORT app:app
-runtime_config:
-    python_version: 3.10.6
