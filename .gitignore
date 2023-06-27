@@ -6,3 +6,4 @@ dataset/generate_input_dataset.py
 dataset/movie_detail.py
 dataset/movie_list.py
 dataset/drop_duplicates.py
+dataset/reduce_credits.py
