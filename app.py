@@ -17,10 +17,10 @@ IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 app = Flask(__name__)
 load_dotenv()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://esnegxrc:2qSG3PHWxUKMp_eO5TuTjOj86fQylCcR@mahmud.db.elephantsql.com/esnegxrc'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['SECRET_KEY'] = "Chicken6768"
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 # toolbar = DebugToolbarExtension(app)
 
 app.app_context().push()
