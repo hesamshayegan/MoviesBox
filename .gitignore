@@ -8,3 +8,5 @@ dataset/movie_list.py
 dataset/drop_duplicates.py
 dataset/reduce_credits.py
 dataset/dataset_subset.py
+dataset/credits_reduced.csv
+dataset/movies_unique.csv
