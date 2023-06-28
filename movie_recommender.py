@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
 
-df1=pd.read_csv('dataset/credits_reduced.csv')
-df2 = pd.read_csv('dataset/movies_unique.csv')
+df1=pd.read_csv('dataset/credits_sub.csv')
+df2 = pd.read_csv('dataset/movies_sub.csv')
 
 df1.columns = ['id','cast','crew']
 df2= df2.merge(df1,on='id')
