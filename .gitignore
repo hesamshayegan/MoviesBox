@@ -1,6 +1,5 @@
 /venv
 __pycache__
-.env
 /dataset/__pycache__
 dataset/generate_input_dataset.py
 dataset/movie_detail.py
@@ -8,5 +7,3 @@ dataset/movie_list.py
 dataset/drop_duplicates.py
 dataset/reduce_credits.py
 dataset/dataset_subset.py
-dataset/credits_reduced.csv
-dataset/movies_unique.csv

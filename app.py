@@ -8,6 +8,7 @@ from models import db, connect_db, User, FavoriteCasts, FavoriteMovies
 from sqlalchemy.exc import IntegrityError
 from movie_recommender import movie_suggestions, cosine_sim2
 from api_requests import get_movie_detail, get_cast_detail, get_ids_by_genre, get_reviews, get_trending_movies_info
+from mysecrets import get_secret
 
 
 CURR_USER_KEY = "curr_user"
@@ -17,10 +18,10 @@ IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500'
 app = Flask(__name__)
 load_dotenv()
 
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = get_secret("DATABASE_URL")
 app.config['SQLALCHEMY_ECHO'] = True
 app.config['DEBUG_TB_INTERCEPT_REDIRECTS'] = False
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SECRET_KEY'] = get_secret('SECRET_KEY')
 # toolbar = DebugToolbarExtension(app)
 
 app.app_context().push()
