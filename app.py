@@ -1,4 +1,4 @@
-import os, random
+import os, random, logging
 from dotenv import load_dotenv
 from flask import Flask, render_template, flash, redirect, url_for, session, g, request
 from flask_debugtoolbar import DebugToolbarExtension
@@ -29,6 +29,12 @@ connect_db(app)
 
 
 
+# Create a logger
+logger = logging.getLogger(__name__)
+
+# Set the logging level to ERROR
+logger.setLevel(logging.ERROR)
+
 ##############################################################################
 # User signup/login/logout routes
 ##############################################################################
@@ -38,7 +44,13 @@ def add_user_to_g():
     """ If logged in, add curr user to Flask global. """
 
     if CURR_USER_KEY in session:
-        g.user = User.query.get(session[CURR_USER_KEY])
+        try:
+            g.user = User.query.get(session[CURR_USER_KEY])
+
+        # Catch any exceptions for now
+        except Exception as e:
+            logger.error(f"An error has occurred: {e}", exc_info=True)
+        
 
     else:
         g.user = None
