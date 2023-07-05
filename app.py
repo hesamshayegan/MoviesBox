@@ -74,6 +74,7 @@ def signup():
             db.session.commit()
 
         except IntegrityError as e:
+            db.session.rollback()
             flash("Username already taken", 'danger')
             return render_template('users/signup.html', form=form)
 
@@ -323,6 +324,7 @@ def favorite_movie_new(id):
             return redirect(url_for('show_movie_detail', id=id))
             
         except IntegrityError as e:
+                db.session.rollback()
                 flash("Movie already added", 'danger')
                 return redirect(url_for('show_movie_detail', id=id))
 
@@ -574,6 +576,7 @@ def favorite_cast_new(id):
             return redirect(url_for('show_cast_detail', id=id))
             
         except IntegrityError as e:
+                db.session.rollback()
                 flash("Cast already added", 'danger')
                 return redirect(url_for('show_cast_detail', id=id))
 
