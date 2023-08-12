@@ -5,6 +5,5 @@ instance_class: F4_1G
 handlers:
 - url: /.*
   script: app.py
-  X-Content-Type-Options: nosniff
 
 entrypoint: gunicorn -b :$PORT app:app
