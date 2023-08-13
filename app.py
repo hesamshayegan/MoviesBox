@@ -95,6 +95,7 @@ def login():
     if form.validate_on_submit():
         user = User.authenticate(form.username.data,
                                  form.password.data)
+        
 
         if user:
             do_login(user)
@@ -102,6 +103,8 @@ def login():
             return redirect(url_for("show_homepage", welcome_msg=welcome_msg ))
 
         flash("Invalid credentials.", 'danger')
+    
+    print(form.errors)
 
     return render_template('users/login.html', form=form)
 
