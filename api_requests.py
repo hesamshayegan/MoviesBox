@@ -1,6 +1,6 @@
 import os, requests, datetime, random
 from dotenv import load_dotenv
-from mysecrets import API_SECRET_KEY
+from secret_keys import API_SECRET_KEY
 # from mysecrets import get_secret
 
 API_BASE_URL = 'https://api.themoviedb.org/3/'
