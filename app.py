@@ -26,8 +26,8 @@ app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', "Chicken6768")
 # app.config['SECRET_KEY'] = get_secret('SECRET_KEY')
 # toolbar = DebugToolbarExtension(app)
 
-app.app_context().push()
-connect_db(app)
+with app.app_context():
+    connect_db(app)
 
 
 
