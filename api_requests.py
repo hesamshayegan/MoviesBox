@@ -1,13 +1,14 @@
-import os, requests, datetime, random 
+import os, requests, datetime, random
 from dotenv import load_dotenv
-from mysecrets import get_secret
+from mysecrets import API_SECRET_KEY
+# from mysecrets import get_secret
 
 API_BASE_URL = 'https://api.themoviedb.org/3/'
 IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500/'
 YOUTUBE_BASE_URL = 'https://www.youtube.com/embed/'
 load_dotenv()
 
-API_KEY = get_secret('API_KEY')
+API_KEY = os.environ.get('API_KEY', API_SECRET_KEY)
 
 # Get suggested movies data from the API
 def get_movie(id):
