@@ -10,7 +10,6 @@ load_dotenv()
 
 API_KEY = os.environ.get('API_KEY')
 
-
 # Get suggested movies data from the API
 def get_movie(id):
     url = (API_BASE_URL+'movie/{movie_id}%?api_key={api_key}&append_to_response=videos,images,credits,watch/providers,reviews').format(api_key=API_KEY, movie_id=id)

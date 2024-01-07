@@ -498,3 +498,6 @@
         text-decoration: underline
     }
 
+    .credentials {
+        margin: 10px
+    }
