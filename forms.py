@@ -28,7 +28,7 @@ class LoginForm(FlaskForm):
 class MovieReccomend(FlaskForm):
     """Movie Reccomender form."""
     
-    movie_title = StringField('Type a Movie Title', validators=[DataRequired()])
+    movie_title = StringField('Find Movies by Title or Cast', validators=[DataRequired()])
     content = RadioField('Similar content', choices=[('overview', 'Check out movies with similar title'), 
                                                      ('soup', 'Explore movies with shared cast')])
     
