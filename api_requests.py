@@ -10,6 +10,7 @@ load_dotenv()
 
 API_KEY = os.environ.get('API_KEY')
 
+
 # Get suggested movies data from the API
 def get_movie(id):
     url = (API_BASE_URL+'movie/{movie_id}%?api_key={api_key}&append_to_response=videos,images,credits,watch/providers,reviews').format(api_key=API_KEY, movie_id=id)
@@ -85,12 +86,15 @@ def get_movie_detail(id):
             img_url = IMAGE_BASE_URL + poster_path
         else:
             img_url = "/static/images/noImage.jpg"
+        popularity = 0
         if resp['popularity']:        
             popularity = round(float(resp['popularity']), 2)
+        overview = ""
         if resp['overview']:
             overview = resp['overview']
         else:
             overview = "No information available."
+        runtime = ""
         if resp['runtime']:
             runtime = resp['runtime']
         else:
@@ -130,7 +134,7 @@ def get_movie_detail(id):
                 if video['type'] == 'Trailer' and video['site'] == 'YouTube': 
                     video_urls.append(video['key'])
                               
-        
+        video_url = ""
         if video_urls:
             video_url = YOUTUBE_BASE_URL+video_urls[0]
         else:
@@ -174,8 +178,12 @@ def get_cast_detail(id):
     
     if movies:
         max_pop = movies[0]['popularity']
-        for movie in movies:
-            movie['popularity'] = int(round((movie['popularity'] / max_pop) * 100))
+        if max_pop != 0:
+            for movie in movies:
+                movie['popularity'] = int(round((movie['popularity'] / max_pop) * 100))
+        else:
+            for movie in movies:
+                movie['popularity'] = 0
       
     cast = {
         id: {
@@ -273,20 +281,24 @@ def get_ids_and_titles(title):
     resp = search_movie_by_title(title)
     suggestions = {}
 
-    for index, movie in enumerate(resp['results']):
-        if index >= 12:
-            break
-        movie_id = movie['id']
-        title = movie['title']
+    if len(resp['results']) != 0:
+        for index, movie in enumerate(resp['results']):
+            if index >= 12:
+                break
+            movie_id = movie['id']
+            title = movie['title']
 
-        suggestions[movie_id] = title
+            suggestions[movie_id] = title
 
-    return suggestions
+        return suggestions
+    
+    else:
+        return suggestions
 
 # Get movies by cast or director
 def search_movie_by_cast(name):
     url = (API_BASE_URL+'search/person?query={cast_name}&api_key={api_key}&language=en-US&page=1&sort_by=popularity.desc').format(api_key=API_KEY, cast_name=name)
-
+    
     try:
         res = requests.get(url)
     except:
@@ -301,21 +313,26 @@ def get_ids_and_cast(name):
 
     resp = search_movie_by_cast(name)
 
-    if resp['results'][0]:
+    suggestions = {}
+    
+    if len(resp['results']) != 0:
         cast_id = resp['results'][0]['id']
 
-    cast_info = get_cast_detail(cast_id)
+        if cast_id:
+            cast_info = get_cast_detail(cast_id)
 
-    movies = cast_info[cast_id]['movies']
+            movies = cast_info[cast_id]['movies']
+
+            if movies:
+                for index, movie in enumerate(movies):
+                    if index >= 12:
+                        break
+                    movie_id = movie['id']
+                    title = movie['title']
+
+                    suggestions[movie_id] = title
+
+        return suggestions
     
-    suggestions = {}
-
-    for index, movie in enumerate(movies):
-        if index >= 12:
-            break
-        movie_id = movie['id']
-        title = movie['title']
-
-        suggestions[movie_id] = title
-
-    return suggestions
+    else:
+        return suggestions

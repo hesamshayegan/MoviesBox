@@ -221,9 +221,10 @@ def show_homepage():
 
         search_input = form.movie_title.data
 
-        invalid_chars = r'\W'
+        invalid_chars = r'[^\w\s]'
 
         if re.search(invalid_chars, search_input):
+            print('invalid char')
             error = True
             return render_template('public/homepage.html', form=form, trending=trending, error=error)
         
@@ -234,6 +235,7 @@ def show_homepage():
 
         # if the user input doesn't exist in the database 
         if isinstance(suggested_titles, str) or len(suggested_titles) == 0:
+            print('no title')
             error = True
             return render_template('public/homepage.html', form=form, trending=trending, error=error)
         

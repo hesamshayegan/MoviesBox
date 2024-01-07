@@ -16,26 +16,30 @@
     {% if suggested_titles %}
         <div class="row">
             {% for id in suggested_titles.keys() %}
-                <div class="col-lg-3 col-md-6 col-sm-12 custom-card">
-                    <div class="card border-success mb-3" style="max-width: 22rem;">
-                        <img src="{{ suggested_titles[id][1] }}" class="card-img-top" alt="image" height="350">
-                        <div class="card-header"><b>{{ suggested_titles[id][0] }}</b></div>
-                        <div class="card-body">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item"> Rating 
-                            {% for i in range(5) %}
-                            {% if i < suggested_titles[id][2] // 20 %}
-                            <span class="fa fa-star checked"></span>
-                            {% else %}
-                            <span class="fa fa-star"></span>
-                            {% endif %}
-                            {% endfor %} 
-                            </li>
-                            <li class="list-group-item"><a href="/movie_detail/{{ id }}" class="btn btn-sm btn-darkgreen">View Details</a></li>  
-                        </ul>
+                {% if suggested_titles|length >= 4 %}
+                    <div class="col-lg-3 col-md-6 col-sm-12 custom-card">
+                {% else %}
+                    <div class="col-md-6 col-sm-12 custom-card">
+                {% endif %}
+                        <div class="card border-success mb-3" style="max-width: 22rem;">
+                            <img src="{{ suggested_titles[id][1] }}" class="card-img-top" alt="image" height="350">
+                            <div class="card-header"><b>{{ suggested_titles[id][0] }}</b></div>
+                            <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item"> Rating 
+                                {% for i in range(5) %}
+                                {% if i < suggested_titles[id][2] // 20 %}
+                                <span class="fa fa-star checked"></span>
+                                {% else %}
+                                <span class="fa fa-star"></span>
+                                {% endif %}
+                                {% endfor %} 
+                                </li>
+                                <li class="list-group-item"><a href="/movie_detail/{{ id }}" class="btn btn-sm btn-darkgreen">View Details</a></li>  
+                            </ul>
+                            </div>
                         </div>
                     </div>
-                </div>
             {% endfor %}
         </div>
         {% endif %}
