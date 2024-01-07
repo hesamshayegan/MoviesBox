@@ -1,13 +1,13 @@
 # MoviesBox
 
 ## About
-MoviesBox is a user-friendly website designed to assist individuals in discovering new movies that align with their personal preferences. The website's search engine incorporates a powerful machine learning algorithm, specifically leveraging content-based filtering techniques. This algorithm has been meticulously trained on a comprehensive dataset consisting of 10,000 diverse movies. By analyzing the characteristics and themes of a user's previously enjoyed films, MoviesBox can accurately suggest relevant and appealing movie recommendations.
+MoviesBox is a user-friendly website designed to assist individuals in discovering new movies that align with their personal preferences. 
 
 ![MoviesBox-homepage](readme-images/MoviesBox-homepage.PNG)
 
 ## Website Features
 ### Movie Search - Public Access
-MoviesBox offers users two primary options for searching movies. Users can initiate a search based on either the movie's storyline or similarities in genres and cast members. Once the app's search engine identifies movies that match the user's input, it seamlessly sends requests to the API endpoints to retrieve the relevant data. This streamlined process ensures that users receive accurate and tailored movie recommendations based on their preferences.
+MoviesBox offers users two primary options for searching movies. Users can initiate a search based on either the movie's title or similarities in cast members. Once the app's search engine identifies the user's input, it seamlessly retrieves the relevant data.
 
 ### Movie Detail - Public access
 Upon selecting a movie and being redirected to its dedicated detail page, MoviesBox offers a comprehensive array of valuable information. Users can expect to find an overall overview of the movie, including details such as the director, genres, and relevant cast members. This wealth of information ensures that users can gain a deeper understanding of the movie's key aspects before making a decision to watch it. 
@@ -36,6 +36,10 @@ Designed using the GenMyModel Database Diagram Online
 
 ## MoviesBox API
 [TMDB API](https://developer.themoviedb.org/reference/intro/getting-started)
+
+## How I Overcame Flask App Deployment Challenges?
+
+While deploying my Flask app on a cloud server with Gunicorn, I encountered session management issues related to CSRF tokens and user data persistence. The problem was traced back to manually pushing the Flask application context, causing the 'g' object to persist between sessions. To resolve this, I replaced the manual push with a ```with app.app_context():``` block, ensuring proper context handling. This resolved CSRF token issues and prevented unintended data persistence, enhancing session management during deployment.
 
 ## Tech Stack Used:
 * Python 3.10.6

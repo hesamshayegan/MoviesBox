@@ -1,4 +1,4 @@
-import os, random
+import os, random, re
 from dotenv import load_dotenv
 from flask import Flask, render_template, flash, redirect, url_for, session, g, request
 from flask_debugtoolbar import DebugToolbarExtension
@@ -6,8 +6,8 @@ from flask_debugtoolbar import DebugToolbarExtension
 from forms import AddUserForm, LoginForm, MovieReccomend, EditUserForm, ReviewForm, Confirmation
 from models import db, connect_db, User, FavoriteCasts, FavoriteMovies
 from sqlalchemy.exc import IntegrityError
-from movie_recommender import movie_suggestions, cosine_sim2
-from api_requests import get_movie_detail, get_cast_detail, get_ids_by_genre, get_reviews, get_trending_movies_info
+# from movie_recommender import movie_suggestions, cosine_sim2
+from api_requests import get_movie_detail, get_cast_detail, get_ids_by_genre, get_reviews, get_trending_movies_info, get_ids_and_titles, get_ids_and_cast
 # from mysecrets import get_secret
 
 
@@ -215,22 +215,30 @@ def show_homepage():
     form = MovieReccomend()
 
     trending = get_trending_movies_info()
-    
+    error = False
+
     if form.validate_on_submit():
-        favorite_title = form.movie_title.data
+
+        search_input = form.movie_title.data
+
+        invalid_chars = r'\W'
+
+        if re.search(invalid_chars, search_input):
+            error = True
+            return render_template('public/homepage.html', form=form, trending=trending, error=error)
         
         if form.content.data == 'overview':
-            suggested_titles = movie_suggestions(favorite_title)
-            
+            suggested_titles = get_ids_and_titles(search_input)      
         else:
-            suggested_titles = movie_suggestions(favorite_title, cosine_sim2)
+            suggested_titles = get_ids_and_cast(search_input)
 
         # if the user input doesn't exist in the database 
-        if isinstance(suggested_titles, str):
-            error_msg = suggested_titles
-            return render_template('public/homepage.html', form=form, trending=trending, error_msg=error_msg)
+        if isinstance(suggested_titles, str) or len(suggested_titles) == 0:
+            error = True
+            return render_template('public/homepage.html', form=form, trending=trending, error=error)
         
         session['suggested_titles'] = suggested_titles
+
         return redirect(url_for('show_suggestions', suggested_titles=suggested_titles))
           
     else: 
@@ -251,7 +259,7 @@ def show_suggestions():
 
     # Retrieve the suggested_titles from the session
     suggested_titles = session.get('suggested_titles')
-    
+
     for id in suggested_titles.keys():
         
         movie = get_movie_detail(id)

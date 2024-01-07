@@ -10,6 +10,7 @@ load_dotenv()
 
 API_KEY = os.environ.get('API_KEY')
 
+
 # Get suggested movies data from the API
 def get_movie(id):
     url = (API_BASE_URL+'movie/{movie_id}%?api_key={api_key}&append_to_response=videos,images,credits,watch/providers,reviews').format(api_key=API_KEY, movie_id=id)
@@ -76,7 +77,6 @@ def get_trending_movies():
 
 # Retrieve movie's detail
 def get_movie_detail(id):
-        
         resp = get_movie(id)
 
         id = id
@@ -96,6 +96,7 @@ def get_movie_detail(id):
             runtime = resp['runtime']
         else:
             runtime = "No information available."
+        genres = []
         if resp['genres']:
             genres = resp['genres']
         casts = []
@@ -252,3 +253,70 @@ def get_trending_movies_info():
                 'img_url': img_url}            
     
     return trending
+
+
+# Get movies by their original, translated and alternative titles.
+def search_movie_by_title(title):
+    url = (API_BASE_URL+'search/movie?query={movie_title}&api_key={api_key}&language=en-US&page=1&sort_by=popularity.desc').format(api_key=API_KEY, movie_title=title)
+
+    try:     
+        res = requests.get(url)
+    except:
+        raise ('not connected to internet or movidb issue')
+    
+    response = res.json()
+
+    return response
+
+# Retrieve movie ids and titles
+def get_ids_and_titles(title):
+
+    resp = search_movie_by_title(title)
+    suggestions = {}
+
+    for index, movie in enumerate(resp['results']):
+        if index >= 12:
+            break
+        movie_id = movie['id']
+        title = movie['title']
+
+        suggestions[movie_id] = title
+
+    return suggestions
+
+# Get movies by cast or director
+def search_movie_by_cast(name):
+    url = (API_BASE_URL+'search/person?query={cast_name}&api_key={api_key}&language=en-US&page=1&sort_by=popularity.desc').format(api_key=API_KEY, cast_name=name)
+
+    try:
+        res = requests.get(url)
+    except:
+        raise ('not connected to internet or movidb issue')
+    
+    response = res.json()
+
+    return response
+
+# Retrieve movie by keyword
+def get_ids_and_cast(name):
+
+    resp = search_movie_by_cast(name)
+
+    if resp['results'][0]:
+        cast_id = resp['results'][0]['id']
+
+    cast_info = get_cast_detail(cast_id)
+
+    movies = cast_info[cast_id]['movies']
+    
+    suggestions = {}
+
+    for index, movie in enumerate(movies):
+        if index >= 12:
+            break
+        movie_id = movie['id']
+        title = movie['title']
+
+        suggestions[movie_id] = title
+
+    return suggestions

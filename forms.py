@@ -29,8 +29,8 @@ class MovieReccomend(FlaskForm):
     """Movie Reccomender form."""
     
     movie_title = StringField('Type a Movie Title', validators=[DataRequired()])
-    content = RadioField('Similar content', choices=[('overview', 'Check out movies with similar story'), 
-                                                     ('soup', 'Look for similar genre, cast and director ')])
+    content = RadioField('Similar content', choices=[('overview', 'Check out movies with similar title'), 
+                                                     ('soup', 'Explore movies featuring shared cast or director')])
     
 class ReviewForm(FlaskForm):
     """ Review form for casts and movies """
